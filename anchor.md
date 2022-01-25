@@ -138,7 +138,7 @@
 | latestConfirmedRound    | [AggregatorRound](#aggregatorround)       |
 | currentRound            | [AggregatorRound](#aggregatorround)       |
 | jobPubkeysData          | publicKey[16]                             |
-| job[Hash](#hash)es      | Hash[16]                                  |
+| jobHashes               | [Hash](#hash)[16]                         |
 | jobPubkeysSize          | u32                                       |
 | jobsChecksum            | u8[32]                                    |
 | authority               | publicKey                                 |
@@ -1339,4 +1339,4 @@
 | 6057 | InvalidLeaseAccountEscrowError   | Invalid lease account escrow.                                               |
 | 6058 | InvalidCrankAccountError         | Invalid crank provided.                                                     |
 | 6059 | CrankNoElementsReadyError        | No elements ready to be popped.                                             |
-| 6060 | VrfVerify[Error](#error)         | Error in verifying vrf proof.                                               |
+| 6060 | VrfVerifyError                   | [Error](#error) in verifying vrf proof.                                     |
