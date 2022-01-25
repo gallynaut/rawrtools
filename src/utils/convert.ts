@@ -6,40 +6,22 @@ import { getEvents } from "./event";
 import { getInstructions } from "./instruction";
 import { getTypes } from "./type";
 
+export interface IdlToMarkdownConfig {
+  mdx?: boolean;
+  multi?: boolean;
+  outputPath: string;
+  outputFile: string;
+}
+
 export async function idl2markdown(
   idl: anchor.Idl,
-  mdx = false
+  config: IdlToMarkdownConfig
 ): Promise<string> {
-  let fileString = "";
+  let fileString = `# ${idl.name} (${idl.version})\n`;
 
-  // Write heading 1
-  fileString += `# ${idl.name} (${idl.version})\n`;
+  const hyperlinks = getHyperlinks(idl, config.multi);
 
-  // create table of contents
-
-  fileString += `## Table of Contents\n`;
-
-  fileString += `* [Accounts](#accounts)\n`;
-  const accountNames = getNames(idl.accounts);
-  for (const name of accountNames) {
-    fileString += `    * ${name}\n`;
-  }
-  fileString += `* [Instructions](#instructions)\n`;
-  const instructionNames = getNames(idl.instructions);
-  for (const name of instructionNames) {
-    fileString += `    * ${name}\n`;
-  }
-  fileString += `* [Events](#events)\n`;
-  const eventNames = getNames(idl.events);
-  for (const name of eventNames) {
-    fileString += `    * ${name}\n`;
-  }
-  fileString += `* [Types](#types)\n`;
-  const typeNames = getNames(idl.types);
-  for (const name of typeNames) {
-    fileString += `    * ${name}\n`;
-  }
-  fileString += `* [Errors](#errors)\n`;
+  fileString += buildTableOfContents(idl);
 
   const accounts = getAccounts(idl);
   const instructions = getInstructions(idl);
@@ -59,7 +41,7 @@ export async function idl2markdown(
     "\n## Errors\n" +
     errors;
 
-  return insertHyperlinks(idl, fileString);
+  return insertHyperlinks(fileString, hyperlinks);
 }
 
 function getNames(param?: { name: string }[]): Set<string> {
@@ -75,6 +57,33 @@ function printRecord(record: Record<string, string>): string {
   for (const k in record) {
     outputString += record[k];
   }
+  return outputString;
+}
+
+function buildTableOfContents(idl: anchor.Idl): string {
+  let outputString = "";
+  outputString += `## Table of Contents\n`;
+  outputString += `* [Accounts](#accounts)\n`;
+  const accountNames = getNames(idl.accounts);
+  for (const name of accountNames) {
+    outputString += `    * ${name}\n`;
+  }
+  outputString += `* [Instructions](#instructions)\n`;
+  const instructionNames = getNames(idl.instructions);
+  for (const name of instructionNames) {
+    outputString += `    * ${name}\n`;
+  }
+  outputString += `* [Events](#events)\n`;
+  const eventNames = getNames(idl.events);
+  for (const name of eventNames) {
+    outputString += `    * ${name}\n`;
+  }
+  outputString += `* [Types](#types)\n`;
+  const typeNames = getNames(idl.types);
+  for (const name of typeNames) {
+    outputString += `    * ${name}\n`;
+  }
+  outputString += `* [Errors](#errors)\n`;
   return outputString;
 }
 
@@ -104,24 +113,22 @@ function getHyperlinks(idl: anchor.Idl, multi = false): Record<string, string> {
   return hyperlinks;
 }
 
-function insertHyperlinks(idl: anchor.Idl, fileString: string): string {
+function insertHyperlinks(
+  fileString: string,
+  hyperlinks: Record<string, string>
+): string {
   let outputString = fileString;
-  function toMarkdownHyperlink(
-    match: string,
-    p1: string,
-    offset: number,
-    string: string
-  ) {
-    const line = string.slice(offset, offset + match.length);
-    // dont replace values unless separated by word boundary
-    const regex = new RegExp("\\b" + p1 + "\\b", "g");
-    return line.replace(regex, `[${p1}](#${p1.toLowerCase()})`);
-  }
 
-  const hyperlinks = getHyperlinks(idl);
   for (const k in hyperlinks) {
     const regex = new RegExp("^(?!#).*[(?:\\s)](" + k + ")\\b", "gm");
-    outputString = outputString.replace(regex, toMarkdownHyperlink);
+    outputString = outputString.replace(
+      regex,
+      (match: string, p1: string, offset: number, string: string) => {
+        const line = string.slice(offset, offset + match.length);
+        const regex = new RegExp("\\b" + p1 + "\\b", "g");
+        return line.replace(regex, hyperlinks[k]);
+      }
+    );
   }
   return outputString;
 }

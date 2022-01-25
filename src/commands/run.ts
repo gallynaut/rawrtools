@@ -18,11 +18,19 @@ export default class RunCommand extends Command {
       description: "output an mdx file with react components",
       required: false,
       default: false,
+      char: "x",
+    }),
+    multi: Flags.boolean({
+      description: "output markdown to separate files for easier import",
+      required: false,
+      default: false,
+      char: "m",
     }),
     output: Flags.string({
       description: "where to output the file to",
       required: false,
       default: "anchor.md",
+      char: "o",
     }),
   };
 
@@ -58,7 +66,12 @@ export default class RunCommand extends Command {
 
     const outputPath = getOutputPath(flags.output, flags.mdx);
     console.log(`output: ${outputPath}`);
-    const outputFileString = await idl2markdown(idl, flags.mdx);
+    const outputFileString = await idl2markdown(idl, {
+      mdx: flags.mdx,
+      multi: flags.multi,
+      outputPath: path.dirname(outputPath),
+      outputFile: path.parse(outputPath).base,
+    });
     fs.writeFileSync(outputPath, outputFileString);
   }
 
