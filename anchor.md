@@ -1071,7 +1071,7 @@
 | Field              | Type                                          |
 | ------------------ | --------------------------------------------- |
 | numSuccess         | u32                                           |
-| num[Error](#error) | u32                                           |
+| numError           | u32                                           |
 | isClosed           | bool                                          |
 | roundOpenSlot      | u64                                           |
 | roundOpenTimestamp | i64                                           |
@@ -1120,17 +1120,17 @@
 
 ### OracleMetrics
 
-| Field                      | Type |
-| -------------------------- | ---- |
-| consecutiveSuccess         | u64  |
-| consecutive[Error](#error) | u64  |
-| consecutiveDisagreement    | u64  |
-| consecutiveLateResponse    | u64  |
-| consecutiveFailure         | u64  |
-| totalSuccess               | u128 |
-| total[Error](#error)       | u128 |
-| totalDisagreement          | u128 |
-| totalLateResponse          | u128 |
+| Field                   | Type |
+| ----------------------- | ---- |
+| consecutiveSuccess      | u64  |
+| consecutiveError        | u64  |
+| consecutiveDisagreement | u64  |
+| consecutiveLateResponse | u64  |
+| consecutiveFailure      | u64  |
+| totalSuccess            | u128 |
+| totalError              | u128 |
+| totalDisagreement       | u128 |
+| totalLateResponse       | u128 |
 
 ### BorshDecimal
 
@@ -1155,84 +1155,84 @@
 
 ### OracleResponseType
 
-| Name                | Value |
-| ------------------- | ----- |
-| TypeSuccess         | 1     |
-| Type[Error](#error) | 2     |
-| TypeDisagreement    | 3     |
-| TypeNoResponse      | 4     |
+| Name             | Value |
+| ---------------- | ----- |
+| TypeSuccess      | 1     |
+| TypeError        | 2     |
+| TypeDisagreement | 3     |
+| TypeNoResponse   | 4     |
 
 ### Error
 
-| Name                           | Value |
-| ------------------------------ | ----- |
-| InvalidPublicKey               | 1     |
-| Serialization[Error](#error)   | 2     |
-| Deserialization[Error](#error) | 3     |
-| InvalidData[Error](#error)     | 4     |
+| Name                 | Value |
+| -------------------- | ----- |
+| InvalidPublicKey     | 1     |
+| SerializationError   | 2     |
+| DeserializationError | 3     |
+| InvalidDataError     | 4     |
 
 ## Errors
 
-| Code | Name                                           | Message                                                                     |
-| ---- | ---------------------------------------------- | --------------------------------------------------------------------------- |
-| 6000 | ArrayOperation[Error](#error)                  | Illegal operation on a Switchboard array.                                   |
-| 6001 | QueueOperation[Error](#error)                  | Illegal operation on a Switchboard queue.                                   |
-| 6002 | IncorrectProgramOwner[Error](#error)           | An account required to be owned by the program has a different owner.       |
-| 6003 | Invalid[AggregatorRound](#aggregatorround)     | Aggregator is not currently populated with a valid round.                   |
-| 6004 | TooManyAggregatorJobs                          | Aggregator cannot fit any more jobs.                                        |
-| 6005 | AggregatorCurrentRoundClosed                   | Aggregator's current round is closed. No results are being accepted.        |
-| 6006 | AggregatorInvalidSaveResult                    | Aggregator received an invalid save result instruction.                     |
-| 6007 | InvalidStrDecimalConversion                    | Failed to convert string to decimal format.                                 |
-| 6008 | AccountLoaderMissingSignature                  | AccountLoader account is missing a required signature.                      |
-| 6009 | MissingRequiredSignature                       | Account is missing a required signature.                                    |
-| 6010 | ArrayOverflow[Error](#error)                   | The attempted action will overflow a zero-copy account array.               |
-| 6011 | ArrayUnderflow[Error](#error)                  | The attempted action will underflow a zero-copy account array.              |
-| 6012 | PubkeyNotFound[Error](#error)                  | The queried public key was not found.                                       |
-| 6013 | AggregatorIllegalRoundOpenCall                 | Aggregator round open called too early.                                     |
-| 6014 | AggregatorIllegalRoundCloseCall                | Aggregator round close called too early.                                    |
-| 6015 | AggregatorClosed[Error](#error)                | Aggregator is closed. Illegal aciton.                                       |
-| 6016 | IllegalOracleIdx[Error](#error)                | Illegal oracle index.                                                       |
-| 6017 | OracleAlreadyResponded[Error](#error)          | The provided oracle has already responded this round.                       |
-| 6018 | ProtoDeserialize[Error](#error)                | Failed to deserialize protocol buffer.                                      |
-| 6019 | UnauthorizedStateUpdate[Error](#error)         | Unathorized program state modification attempted.                           |
-| 6020 | MissingOracleAccounts[Error](#error)           | Not enough oracle accounts provided to closeRounds.                         |
-| 6021 | OracleMismatch[Error](#error)                  | An unexpected oracle account was provided for the transaction.              |
-| 6022 | CrankMaxCapacity[Error](#error)                | Attempted to push to a Crank that's at capacity                             |
-| 6023 | AggregatorLeaseInsufficientFunds               | Aggregator update call attempted but attached lease has insufficient funds. |
-| 6024 | IncorrectTokenAccountMint                      | The provided token account does not point to the Switchbaord token mint.    |
-| 6025 | InvalidEscrowAccount                           | An invalid escrow account was provided.                                     |
-| 6026 | CrankEmpty[Error](#error)                      | Crank empty. Pop failed.                                                    |
-| 6027 | PdaDerive[Error](#error)                       | Failed to derive a PDA from the provided seed.                              |
-| 6028 | AggregatorAccountNotFound                      | Aggregator account missing from provided account list.                      |
-| 6029 | PermissionAccountNotFound                      | Permission account missing from provided account list.                      |
-| 6030 | LeaseAccountDeriveFailure                      | Failed to derive a lease account.                                           |
-| 6031 | PermissionAccountDeriveFailure                 | Failed to derive a permission account.                                      |
-| 6032 | EscrowAccountNotFound                          | Escrow account missing from provided account list.                          |
-| 6033 | LeaseAccountNotFound                           | Lease account missing from provided account list.                           |
-| 6034 | DecimalConversion[Error](#error)               | Decimal conversion method failed.                                           |
-| 6035 | PermissionDenied                               | Permission account is missing required flags for the given action.          |
-| 6036 | QueueAtCapacity                                | Oracle queue is at lease capacity.                                          |
-| 6037 | Excessive[CrankRow](#crankrow)s[Error](#error) | Data feed is already pushed on a crank.                                     |
-| 6038 | AggregatorLocked[Error](#error)                | Aggregator is locked, no setting modifications or job additions allowed.    |
-| 6039 | AggregatorInvalidBatchSize[Error](#error)      | Aggregator invalid batch size.                                              |
-| 6040 | AggregatorJobChecksumMismatch                  | Oracle provided an incorrect aggregator job checksum.                       |
-| 6041 | IntegerOverflow[Error](#error)                 | An integer overflow occurred.                                               |
-| 6042 | InvalidUpdatePeriod[Error](#error)             | Mimimum update period is 5 seconds.                                         |
-| 6043 | NoResults[Error](#error)                       | Aggregator round evaluation attempted with no results.                      |
-| 6044 | InvalidExpiration[Error](#error)               | An expiration constraint was broken.                                        |
-| 6045 | InsufficientStake[Error](#error)               | An account provided insufficient stake for aciton.                          |
-| 6046 | LeaseInactive[Error](#error)                   | The provided lease account is not active.                                   |
-| 6047 | NoAggregatorJobsFound                          | No jobs are currently included in the aggregator.                           |
-| 6048 | IntegerUnderflow[Error](#error)                | An integer underflow occurred.                                              |
-| 6049 | OracleQueueMismatch                            | An invalid oracle queue account was provided.                               |
-| 6050 | OracleWalletMismatch[Error](#error)            | An unexpected oracle wallet account was provided for the transaction.       |
-| 6051 | InvalidBufferAccount[Error](#error)            | An invalid buffer account was provided.                                     |
-| 6052 | InsufficientOracleQueue[Error](#error)         | Insufficient oracle queue size.                                             |
-| 6053 | InvalidAuthority[Error](#error)                | Invalid authority account provided.                                         |
-| 6054 | InvalidTokenAccountMint[Error](#error)         | A provided token wallet is associated with an incorrect mint.               |
-| 6055 | ExcessiveLeaseWithdrawl[Error](#error)         | You must leave enough funds to perform at least 1 update in the lease.      |
-| 6056 | InvalideHistoryAccount[Error](#error)          | Invalid history account provided.                                           |
-| 6057 | InvalidLeaseAccountEscrow[Error](#error)       | Invalid lease account escrow.                                               |
-| 6058 | InvalidCrankAccount[Error](#error)             | Invalid crank provided.                                                     |
-| 6059 | CrankNoElementsReady[Error](#error)            | No elements ready to be popped.                                             |
-| 6060 | VrfVerify[Error](#error)                       | Error in verifying vrf proof.                                               |
+| Code | Name                             | Message                                                                     |
+| ---- | -------------------------------- | --------------------------------------------------------------------------- |
+| 6000 | ArrayOperationError              | Illegal operation on a Switchboard array.                                   |
+| 6001 | QueueOperationError              | Illegal operation on a Switchboard queue.                                   |
+| 6002 | IncorrectProgramOwnerError       | An account required to be owned by the program has a different owner.       |
+| 6003 | InvalidAggregatorRound           | Aggregator is not currently populated with a valid round.                   |
+| 6004 | TooManyAggregatorJobs            | Aggregator cannot fit any more jobs.                                        |
+| 6005 | AggregatorCurrentRoundClosed     | Aggregator's current round is closed. No results are being accepted.        |
+| 6006 | AggregatorInvalidSaveResult      | Aggregator received an invalid save result instruction.                     |
+| 6007 | InvalidStrDecimalConversion      | Failed to convert string to decimal format.                                 |
+| 6008 | AccountLoaderMissingSignature    | AccountLoader account is missing a required signature.                      |
+| 6009 | MissingRequiredSignature         | Account is missing a required signature.                                    |
+| 6010 | ArrayOverflowError               | The attempted action will overflow a zero-copy account array.               |
+| 6011 | ArrayUnderflowError              | The attempted action will underflow a zero-copy account array.              |
+| 6012 | PubkeyNotFoundError              | The queried public key was not found.                                       |
+| 6013 | AggregatorIllegalRoundOpenCall   | Aggregator round open called too early.                                     |
+| 6014 | AggregatorIllegalRoundCloseCall  | Aggregator round close called too early.                                    |
+| 6015 | AggregatorClosedError            | Aggregator is closed. Illegal aciton.                                       |
+| 6016 | IllegalOracleIdxError            | Illegal oracle index.                                                       |
+| 6017 | OracleAlreadyRespondedError      | The provided oracle has already responded this round.                       |
+| 6018 | ProtoDeserializeError            | Failed to deserialize protocol buffer.                                      |
+| 6019 | UnauthorizedStateUpdateError     | Unathorized program state modification attempted.                           |
+| 6020 | MissingOracleAccountsError       | Not enough oracle accounts provided to closeRounds.                         |
+| 6021 | OracleMismatchError              | An unexpected oracle account was provided for the transaction.              |
+| 6022 | CrankMaxCapacityError            | Attempted to push to a Crank that's at capacity                             |
+| 6023 | AggregatorLeaseInsufficientFunds | Aggregator update call attempted but attached lease has insufficient funds. |
+| 6024 | IncorrectTokenAccountMint        | The provided token account does not point to the Switchbaord token mint.    |
+| 6025 | InvalidEscrowAccount             | An invalid escrow account was provided.                                     |
+| 6026 | CrankEmptyError                  | Crank empty. Pop failed.                                                    |
+| 6027 | PdaDeriveError                   | Failed to derive a PDA from the provided seed.                              |
+| 6028 | AggregatorAccountNotFound        | Aggregator account missing from provided account list.                      |
+| 6029 | PermissionAccountNotFound        | Permission account missing from provided account list.                      |
+| 6030 | LeaseAccountDeriveFailure        | Failed to derive a lease account.                                           |
+| 6031 | PermissionAccountDeriveFailure   | Failed to derive a permission account.                                      |
+| 6032 | EscrowAccountNotFound            | Escrow account missing from provided account list.                          |
+| 6033 | LeaseAccountNotFound             | Lease account missing from provided account list.                           |
+| 6034 | DecimalConversionError           | Decimal conversion method failed.                                           |
+| 6035 | PermissionDenied                 | Permission account is missing required flags for the given action.          |
+| 6036 | QueueAtCapacity                  | Oracle queue is at lease capacity.                                          |
+| 6037 | ExcessiveCrankRowsError          | Data feed is already pushed on a crank.                                     |
+| 6038 | AggregatorLockedError            | Aggregator is locked, no setting modifications or job additions allowed.    |
+| 6039 | AggregatorInvalidBatchSizeError  | Aggregator invalid batch size.                                              |
+| 6040 | AggregatorJobChecksumMismatch    | Oracle provided an incorrect aggregator job checksum.                       |
+| 6041 | IntegerOverflowError             | An integer overflow occurred.                                               |
+| 6042 | InvalidUpdatePeriodError         | Mimimum update period is 5 seconds.                                         |
+| 6043 | NoResultsError                   | Aggregator round evaluation attempted with no results.                      |
+| 6044 | InvalidExpirationError           | An expiration constraint was broken.                                        |
+| 6045 | InsufficientStakeError           | An account provided insufficient stake for aciton.                          |
+| 6046 | LeaseInactiveError               | The provided lease account is not active.                                   |
+| 6047 | NoAggregatorJobsFound            | No jobs are currently included in the aggregator.                           |
+| 6048 | IntegerUnderflowError            | An integer underflow occurred.                                              |
+| 6049 | OracleQueueMismatch              | An invalid oracle queue account was provided.                               |
+| 6050 | OracleWalletMismatchError        | An unexpected oracle wallet account was provided for the transaction.       |
+| 6051 | InvalidBufferAccountError        | An invalid buffer account was provided.                                     |
+| 6052 | InsufficientOracleQueueError     | Insufficient oracle queue size.                                             |
+| 6053 | InvalidAuthorityError            | Invalid authority account provided.                                         |
+| 6054 | InvalidTokenAccountMintError     | A provided token wallet is associated with an incorrect mint.               |
+| 6055 | ExcessiveLeaseWithdrawlError     | You must leave enough funds to perform at least 1 update in the lease.      |
+| 6056 | InvalideHistoryAccountError      | Invalid history account provided.                                           |
+| 6057 | InvalidLeaseAccountEscrowError   | Invalid lease account escrow.                                               |
+| 6058 | InvalidCrankAccountError         | Invalid crank provided.                                                     |
+| 6059 | CrankNoElementsReadyError        | No elements ready to be popped.                                             |
+| 6060 | VrfVerify[Error](#error)         | Error in verifying vrf proof.                                               |

@@ -81,13 +81,20 @@ function getHyperlinks(idl: anchor.Idl, multi = false): Record<string, string> {
 
 function insertHyperlinks(idl: anchor.Idl, fileString: string): string {
   let outputString = fileString;
-  function replacer(match: string, p1: string, offset: number, string: string) {
+  function replacer(
+    match: string,
+    p1: string,
+    // p2: string,
+    // p3: string,
+    offset: number,
+    string: string
+  ) {
     return match.replace(p1, `[${p1}](#${p1.toLowerCase().replace(" ", "")})`);
   }
-  
+
   const hyperlinks = getHyperlinks(idl);
   for (const k in hyperlinks) {
-    const regex = new RegExp("^(?!#).*(" + k + ")", "gm");
+    const regex = new RegExp("^(?!#).*[(|)(\\s)](" + k + ")", "gm");
     outputString = outputString.replace(regex, replacer);
   }
   return outputString;
