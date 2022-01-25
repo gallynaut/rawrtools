@@ -13,33 +13,33 @@
 
 ### AggregatorAccountData
 
-| Field                   | Type               |
-| ----------------------- | ------------------ |
-| name                    | u8[32]             |
-| metadata                | u8[128]            |
-| authorWallet            | publicKey          |
-| queuePubkey             | publicKey          |
-| oracleRequestBatchSize  | u32                |
-| minOracleResults        | u32                |
-| minJobResults           | u32                |
-| minUpdateDelaySeconds   | u32                |
-| startAfter              | i64                |
-| varianceThreshold       | SwitchboardDecimal |
-| forceReportPeriod       | i64                |
-| expiration              | i64                |
-| consecutiveFailureCount | u64                |
-| nextAllowedUpdateTime   | i64                |
-| isLocked                | bool               |
-| crankPubkey             | publicKey          |
-| latestConfirmedRound    | AggregatorRound    |
-| currentRound            | AggregatorRound    |
-| jobPubkeysData          | publicKey[16]      |
-| jobHashes               | Hash[16]           |
-| jobPubkeysSize          | u32                |
-| jobsChecksum            | u8[32]             |
-| authority               | publicKey          |
-| historyBuffer           | publicKey          |
-| ebuf                    | u8[192]            |
+| Field                   | Type                                      |
+| ----------------------- | ----------------------------------------- |
+| name                    | u8[32]                                    |
+| metadata                | u8[128]                                   |
+| authorWallet            | publicKey                                 |
+| queuePubkey             | publicKey                                 |
+| oracleRequestBatchSize  | u32                                       |
+| minOracleResults        | u32                                       |
+| minJobResults           | u32                                       |
+| minUpdateDelaySeconds   | u32                                       |
+| startAfter              | i64                                       |
+| varianceThreshold       | [SwitchboardDecimal](#switchboarddecimal) |
+| forceReportPeriod       | i64                                       |
+| expiration              | i64                                       |
+| consecutiveFailureCount | u64                                       |
+| nextAllowedUpdateTime   | i64                                       |
+| isLocked                | bool                                      |
+| crankPubkey             | publicKey                                 |
+| latestConfirmedRound    | [AggregatorRound](#aggregatorround)       |
+| currentRound            | [AggregatorRound](#aggregatorround)       |
+| jobPubkeysData          | publicKey[16]                             |
+| job[Hash](#hash)es      | Hash[16]                                  |
+| jobPubkeysSize          | u32                                       |
+| jobsChecksum            | u8[32]                                    |
+| authority               | publicKey                                 |
+| historyBuffer           | publicKey                                 |
+| ebuf                    | u8[192]                                   |
 
 ### PermissionAccountData
 
@@ -69,26 +69,26 @@
 
 ### OracleQueueAccountData
 
-| Field                         | Type               |
-| ----------------------------- | ------------------ |
-| name                          | u8[32]             |
-| metadata                      | u8[64]             |
-| authority                     | publicKey          |
-| oracleTimeout                 | u32                |
-| reward                        | u64                |
-| minStake                      | u64                |
-| slashingEnabled               | bool               |
-| varianceToleranceMultiplier   | SwitchboardDecimal |
-| feedProbationPeriod           | u32                |
-| currIdx                       | u32                |
-| size                          | u32                |
-| gcIdx                         | u32                |
-| consecutiveFeedFailureLimit   | u64                |
-| consecutiveOracleFailureLimit | u64                |
-| unpermissionedFeedsEnabled    | bool               |
-| ebuf                          | u8[1023]           |
-| maxSize                       | u32                |
-| dataBuffer                    | publicKey          |
+| Field                         | Type                                      |
+| ----------------------------- | ----------------------------------------- |
+| name                          | u8[32]                                    |
+| metadata                      | u8[64]                                    |
+| authority                     | publicKey                                 |
+| oracleTimeout                 | u32                                       |
+| reward                        | u64                                       |
+| minStake                      | u64                                       |
+| slashingEnabled               | bool                                      |
+| varianceToleranceMultiplier   | [SwitchboardDecimal](#switchboarddecimal) |
+| feedProbationPeriod           | u32                                       |
+| currIdx                       | u32                                       |
+| size                          | u32                                       |
+| gcIdx                         | u32                                       |
+| consecutiveFeedFailureLimit   | u64                                       |
+| consecutiveOracleFailureLimit | u64                                       |
+| unpermissionedFeedsEnabled    | bool                                      |
+| ebuf                          | u8[1023]                                  |
+| maxSize                       | u32                                       |
+| dataBuffer                    | publicKey                                 |
 
 ### CrankAccountData
 
@@ -105,26 +105,26 @@
 
 ### VrfAccountData
 
-| Field                | Type     |
-| -------------------- | -------- |
-| counter              | u128     |
-| latestFinalizedRound | VrfRound |
-| currentRound         | VrfRound |
-| ebuf                 | u8[255]  |
+| Field                | Type                  |
+| -------------------- | --------------------- |
+| counter              | u128                  |
+| latestFinalizedRound | [VrfRound](#vrfround) |
+| currentRound         | [VrfRound](#vrfround) |
+| ebuf                 | u8[255]               |
 
 ### OracleAccountData
 
-| Field           | Type          |
-| --------------- | ------------- |
-| name            | u8[32]        |
-| metadata        | u8[128]       |
-| oracleAuthority | publicKey     |
-| lastHeartbeat   | i64           |
-| numInUse        | u32           |
-| tokenAccount    | publicKey     |
-| queuePubkey     | publicKey     |
-| metrics         | OracleMetrics |
-| ebuf            | u8[256]       |
+| Field           | Type                            |
+| --------------- | ------------------------------- |
+| name            | u8[32]                          |
+| metadata        | u8[128]                         |
+| oracleAuthority | publicKey                       |
+| lastHeartbeat   | i64                             |
+| numInUse        | u32                             |
+| tokenAccount    | publicKey                       |
+| queuePubkey     | publicKey                       |
+| metrics         | [OracleMetrics](#oraclemetrics) |
+| ebuf            | u8[256]                         |
 
 ### JobAccountData
 
@@ -154,9 +154,9 @@
 
 #### Args
 
-| Name   | Type                |
-| ------ | ------------------- |
-| params | VaultTransferParams |
+| Name   | Type                                        |
+| ------ | ------------------------------------------- |
+| params | [VaultTransferParams](#vaulttransferparams) |
 
 ### programInit
 
@@ -174,9 +174,9 @@
 
 #### Args
 
-| Name   | Type              |
-| ------ | ----------------- |
-| params | ProgramInitParams |
+| Name   | Type                                    |
+| ------ | --------------------------------------- |
+| params | [ProgramInitParams](#programinitparams) |
 
 ### programConfig
 
@@ -189,9 +189,9 @@
 
 #### Args
 
-| Name   | Type                |
-| ------ | ------------------- |
-| params | ProgramConfigParams |
+| Name   | Type                                        |
+| ------ | ------------------------------------------- |
+| params | [ProgramConfigParams](#programconfigparams) |
 
 ### aggregatorInit
 
@@ -207,9 +207,9 @@
 
 #### Args
 
-| Name   | Type                 |
-| ------ | -------------------- |
-| params | AggregatorInitParams |
+| Name   | Type                                          |
+| ------ | --------------------------------------------- |
+| params | [AggregatorInitParams](#aggregatorinitparams) |
 
 ### aggregatorLock
 
@@ -222,9 +222,9 @@
 
 #### Args
 
-| Name   | Type                 |
-| ------ | -------------------- |
-| params | AggregatorLockParams |
+| Name   | Type                                          |
+| ------ | --------------------------------------------- |
+| params | [AggregatorLockParams](#aggregatorlockparams) |
 
 ### aggregatorSetAuthority
 
@@ -238,9 +238,9 @@
 
 #### Args
 
-| Name   | Type                         |
-| ------ | ---------------------------- |
-| params | AggregatorSetAuthorityParams |
+| Name   | Type                                                          |
+| ------ | ------------------------------------------------------------- |
+| params | [AggregatorSetAuthorityParams](#aggregatorsetauthorityparams) |
 
 ### aggregatorSetBatchSize
 
@@ -253,9 +253,9 @@
 
 #### Args
 
-| Name   | Type                         |
-| ------ | ---------------------------- |
-| params | AggregatorSetBatchSizeParams |
+| Name   | Type                                                          |
+| ------ | ------------------------------------------------------------- |
+| params | [AggregatorSetBatchSizeParams](#aggregatorsetbatchsizeparams) |
 
 ### aggregatorSetMinJobs
 
@@ -268,9 +268,9 @@
 
 #### Args
 
-| Name   | Type                       |
-| ------ | -------------------------- |
-| params | AggregatorSetMinJobsParams |
+| Name   | Type                                                      |
+| ------ | --------------------------------------------------------- |
+| params | [AggregatorSetMinJobsParams](#aggregatorsetminjobsparams) |
 
 ### aggregatorSetMinOracles
 
@@ -283,9 +283,9 @@
 
 #### Args
 
-| Name   | Type                          |
-| ------ | ----------------------------- |
-| params | AggregatorSetMinOraclesParams |
+| Name   | Type                                                            |
+| ------ | --------------------------------------------------------------- |
+| params | [AggregatorSetMinOraclesParams](#aggregatorsetminoraclesparams) |
 
 ### aggregatorSetVarianceThreshold
 
@@ -298,9 +298,9 @@
 
 #### Args
 
-| Name   | Type                                 |
-| ------ | ------------------------------------ |
-| params | AggregatorSetVarianceThresholdParams |
+| Name   | Type                                                                          |
+| ------ | ----------------------------------------------------------------------------- |
+| params | [AggregatorSetVarianceThresholdParams](#aggregatorsetvariancethresholdparams) |
 
 ### aggregatorSetHistoryBuffer
 
@@ -314,9 +314,9 @@
 
 #### Args
 
-| Name   | Type                             |
-| ------ | -------------------------------- |
-| params | AggregatorSetHistoryBufferParams |
+| Name   | Type                                                                  |
+| ------ | --------------------------------------------------------------------- |
+| params | [AggregatorSetHistoryBufferParams](#aggregatorsethistorybufferparams) |
 
 ### aggregatorSetQueue
 
@@ -330,9 +330,9 @@
 
 #### Args
 
-| Name   | Type                     |
-| ------ | ------------------------ |
-| params | AggregatorSetQueueParams |
+| Name   | Type                                                  |
+| ------ | ----------------------------------------------------- |
+| params | [AggregatorSetQueueParams](#aggregatorsetqueueparams) |
 
 ### aggregatorAddJob
 
@@ -346,9 +346,9 @@
 
 #### Args
 
-| Name   | Type                   |
-| ------ | ---------------------- |
-| params | AggregatorAddJobParams |
+| Name   | Type                                              |
+| ------ | ------------------------------------------------- |
+| params | [AggregatorAddJobParams](#aggregatoraddjobparams) |
 
 ### aggregatorRemoveJob
 
@@ -362,9 +362,9 @@
 
 #### Args
 
-| Name   | Type                      |
-| ------ | ------------------------- |
-| params | AggregatorRemoveJobParams |
+| Name   | Type                                                    |
+| ------ | ------------------------------------------------------- |
+| params | [AggregatorRemoveJobParams](#aggregatorremovejobparams) |
 
 ### aggregatorOpenRound
 
@@ -385,9 +385,9 @@
 
 #### Args
 
-| Name   | Type                      |
-| ------ | ------------------------- |
-| params | AggregatorOpenRoundParams |
+| Name   | Type                                                    |
+| ------ | ------------------------------------------------------- |
+| params | [AggregatorOpenRoundParams](#aggregatoropenroundparams) |
 
 ### aggregatorSaveResult
 
@@ -410,9 +410,9 @@
 
 #### Args
 
-| Name   | Type                       |
-| ------ | -------------------------- |
-| params | AggregatorSaveResultParams |
+| Name   | Type                                                      |
+| ------ | --------------------------------------------------------- |
+| params | [AggregatorSaveResultParams](#aggregatorsaveresultparams) |
 
 ### jobInit
 
@@ -426,9 +426,9 @@
 
 #### Args
 
-| Name   | Type          |
-| ------ | ------------- |
-| params | JobInitParams |
+| Name   | Type                            |
+| ------ | ------------------------------- |
+| params | [JobInitParams](#jobinitparams) |
 
 ### permissionInit
 
@@ -445,9 +445,9 @@
 
 #### Args
 
-| Name   | Type                 |
-| ------ | -------------------- |
-| params | PermissionInitParams |
+| Name   | Type                                          |
+| ------ | --------------------------------------------- |
+| params | [PermissionInitParams](#permissioninitparams) |
 
 ### permissionSet
 
@@ -460,9 +460,9 @@
 
 #### Args
 
-| Name   | Type                |
-| ------ | ------------------- |
-| params | PermissionSetParams |
+| Name   | Type                                        |
+| ------ | ------------------------------------------- |
+| params | [PermissionSetParams](#permissionsetparams) |
 
 ### oracleQueueInit
 
@@ -478,9 +478,9 @@
 
 #### Args
 
-| Name   | Type                  |
-| ------ | --------------------- |
-| params | OracleQueueInitParams |
+| Name   | Type                                            |
+| ------ | ----------------------------------------------- |
+| params | [OracleQueueInitParams](#oraclequeueinitparams) |
 
 ### oracleQueueSetRewards
 
@@ -493,9 +493,9 @@
 
 #### Args
 
-| Name   | Type                        |
-| ------ | --------------------------- |
-| params | OracleQueueSetRewardsParams |
+| Name   | Type                                                        |
+| ------ | ----------------------------------------------------------- |
+| params | [OracleQueueSetRewardsParams](#oraclequeuesetrewardsparams) |
 
 ### oracleInit
 
@@ -513,9 +513,9 @@
 
 #### Args
 
-| Name   | Type             |
-| ------ | ---------------- |
-| params | OracleInitParams |
+| Name   | Type                                  |
+| ------ | ------------------------------------- |
+| params | [OracleInitParams](#oracleinitparams) |
 
 ### oracleHeartbeat
 
@@ -533,9 +533,9 @@
 
 #### Args
 
-| Name   | Type                  |
-| ------ | --------------------- |
-| params | OracleHeartbeatParams |
+| Name   | Type                                            |
+| ------ | ----------------------------------------------- |
+| params | [OracleHeartbeatParams](#oracleheartbeatparams) |
 
 ### oracleWithdraw
 
@@ -556,9 +556,9 @@
 
 #### Args
 
-| Name   | Type                 |
-| ------ | -------------------- |
-| params | OracleWithdrawParams |
+| Name   | Type                                          |
+| ------ | --------------------------------------------- |
+| params | [OracleWithdrawParams](#oraclewithdrawparams) |
 
 ### leaseInit
 
@@ -579,9 +579,9 @@
 
 #### Args
 
-| Name   | Type            |
-| ------ | --------------- |
-| params | LeaseInitParams |
+| Name   | Type                                |
+| ------ | ----------------------------------- |
+| params | [LeaseInitParams](#leaseinitparams) |
 
 ### leaseExtend
 
@@ -600,9 +600,9 @@
 
 #### Args
 
-| Name   | Type              |
-| ------ | ----------------- |
-| params | LeaseExtendParams |
+| Name   | Type                                    |
+| ------ | --------------------------------------- |
+| params | [LeaseExtendParams](#leaseextendparams) |
 
 ### leaseWithdraw
 
@@ -621,9 +621,9 @@
 
 #### Args
 
-| Name   | Type                |
-| ------ | ------------------- |
-| params | LeaseWithdrawParams |
+| Name   | Type                                        |
+| ------ | ------------------------------------------- |
+| params | [LeaseWithdrawParams](#leasewithdrawparams) |
 
 ### crankInit
 
@@ -639,9 +639,9 @@
 
 #### Args
 
-| Name   | Type            |
-| ------ | --------------- |
-| params | CrankInitParams |
+| Name   | Type                                |
+| ------ | ----------------------------------- |
+| params | [CrankInitParams](#crankinitparams) |
 
 ### crankPush
 
@@ -661,9 +661,9 @@
 
 #### Args
 
-| Name   | Type            |
-| ------ | --------------- |
-| params | CrankPushParams |
+| Name   | Type                                |
+| ------ | ----------------------------------- |
+| params | [CrankPushParams](#crankpushparams) |
 
 ### crankPop
 
@@ -682,9 +682,9 @@
 
 #### Args
 
-| Name   | Type           |
-| ------ | -------------- |
-| params | CrankPopParams |
+| Name   | Type                              |
+| ------ | --------------------------------- |
+| params | [CrankPopParams](#crankpopparams) |
 
 ### ecvrfVerify
 
@@ -696,9 +696,134 @@
 
 #### Args
 
-| Name   | Type              |
-| ------ | ----------------- |
-| params | EcvrfVerifyParams |
+| Name   | Type                                    |
+| ------ | --------------------------------------- |
+| params | [EcvrfVerifyParams](#ecvrfverifyparams) |
+
+## Events
+
+### AggregatorInitEvent
+
+| Name       | Type      | Index |
+| ---------- | --------- | ----- |
+| feedPubkey | publicKey | false |
+
+### AggregatorOpenRoundEvent
+
+| Name           | Type        | Index |
+| -------------- | ----------- | ----- |
+| feedPubkey     | publicKey   | false |
+| oraclePubkeys  | publicKey[] | false |
+| jobPubkeys     | publicKey[] | false |
+| remainingFunds | u64         | false |
+| queueAuthority | publicKey   | false |
+
+### AggregatorValueUpdateEvent
+
+| Name          | Type                            | Index |
+| ------------- | ------------------------------- | ----- |
+| feedPubkey    | publicKey                       | false |
+| value         | [BorshDecimal](#borshdecimal)   | false |
+| slot          | u64                             | false |
+| timestamp     | i64                             | false |
+| oraclePubkeys | publicKey[]                     | false |
+| oracleValues  | [BorshDecimal](#borshdecimal)[] | false |
+
+### OracleRewardEvent
+
+| Name         | Type      | Index |
+| ------------ | --------- | ----- |
+| feedPubkey   | publicKey | false |
+| leasePubkey  | publicKey | false |
+| oraclePubkey | publicKey | false |
+| walletPubkey | publicKey | false |
+| amount       | u64       | false |
+| roundSlot    | u64       | false |
+| timestamp    | i64       | false |
+
+### OracleWithdrawEvent
+
+| Name              | Type      | Index |
+| ----------------- | --------- | ----- |
+| oraclePubkey      | publicKey | false |
+| walletPubkey      | publicKey | false |
+| destinationWallet | publicKey | false |
+| previousAmount    | u64       | false |
+| newAmount         | u64       | false |
+| timestamp         | i64       | false |
+
+### LeaseWithdrawEvent
+
+| Name           | Type      | Index |
+| -------------- | --------- | ----- |
+| leasePubkey    | publicKey | false |
+| walletPubkey   | publicKey | false |
+| previousAmount | u64       | false |
+| newAmount      | u64       | false |
+| timestamp      | i64       | false |
+
+### OracleSlashEvent
+
+| Name         | Type      | Index |
+| ------------ | --------- | ----- |
+| feedPubkey   | publicKey | false |
+| leasePubkey  | publicKey | false |
+| oraclePubkey | publicKey | false |
+| walletPubkey | publicKey | false |
+| amount       | u64       | false |
+| roundSlot    | u64       | false |
+| timestamp    | i64       | false |
+
+### LeaseFundEvent
+
+| Name        | Type      | Index |
+| ----------- | --------- | ----- |
+| leasePubkey | publicKey | false |
+| funder      | publicKey | false |
+| amount      | u64       | false |
+| timestamp   | i64       | false |
+
+### ProbationBrokenEvent
+
+| Name        | Type      | Index |
+| ----------- | --------- | ----- |
+| feedPubkey  | publicKey | false |
+| queuePubkey | publicKey | false |
+| timestamp   | i64       | false |
+
+### FeedPermissionRevokedEvent
+
+| Name       | Type      | Index |
+| ---------- | --------- | ----- |
+| feedPubkey | publicKey | false |
+| timestamp  | i64       | false |
+
+### GarbageCollectFailureEvent
+
+| Name        | Type      | Index |
+| ----------- | --------- | ----- |
+| queuePubkey | publicKey | false |
+
+### OracleBootedEvent
+
+| Name         | Type      | Index |
+| ------------ | --------- | ----- |
+| queuePubkey  | publicKey | false |
+| oraclePubkey | publicKey | false |
+
+### CrankLeaseInsufficientFundsEvent
+
+| Name        | Type      | Index |
+| ----------- | --------- | ----- |
+| feedPubkey  | publicKey | false |
+| leasePubkey | publicKey | false |
+
+### CrankPopExpectedFailureEvent
+
+| Name        | Type      | Index |
+| ----------- | --------- | ----- |
+| feedPubkey  | publicKey | false |
+| leasePubkey | publicKey | false |
 
 ## Types
 
@@ -709,19 +834,19 @@
 
 ### AggregatorInitParams
 
-| Field                 | Type         |
-| --------------------- | ------------ |
-| name                  | u8[32]       |
-| metadata              | u8[128]      |
-| batchSize             | u32          |
-| minOracleResults      | u32          |
-| minJobResults         | u32          |
-| minUpdateDelaySeconds | u32          |
-| startAfter            | i64          |
-| varianceThreshold     | BorshDecimal |
-| forceReportPeriod     | i64          |
-| expiration            | i64          |
-| stateBump             | u8           |
+| Field                 | Type                          |
+| --------------------- | ----------------------------- |
+| name                  | u8[32]                        |
+| metadata              | u8[128]                       |
+| batchSize             | u32                           |
+| minOracleResults      | u32                           |
+| minJobResults         | u32                           |
+| minUpdateDelaySeconds | u32                           |
+| startAfter            | i64                           |
+| varianceThreshold     | [BorshDecimal](#borshdecimal) |
+| forceReportPeriod     | i64                           |
+| expiration            | i64                           |
+| stateBump             | u8                            |
 
 ### AggregatorLockParams
 
@@ -745,18 +870,18 @@
 
 ### AggregatorSaveResultParams
 
-| Field                | Type         |
-| -------------------- | ------------ |
-| oracleIdx            | u32          |
-| error                | bool         |
-| value                | BorshDecimal |
-| jobsChecksum         | u8[32]       |
-| minResponse          | BorshDecimal |
-| maxResponse          | BorshDecimal |
-| feedPermissionBump   | u8           |
-| oraclePermissionBump | u8           |
-| leaseBump            | u8           |
-| stateBump            | u8           |
+| Field                | Type                          |
+| -------------------- | ----------------------------- |
+| oracleIdx            | u32                           |
+| error                | bool                          |
+| value                | [BorshDecimal](#borshdecimal) |
+| jobsChecksum         | u8[32]                        |
+| minResponse          | [BorshDecimal](#borshdecimal) |
+| maxResponse          | [BorshDecimal](#borshdecimal) |
+| feedPermissionBump   | u8                            |
+| oraclePermissionBump | u8                            |
+| leaseBump            | u8                            |
+| stateBump            | u8                            |
 
 ### AggregatorSetAuthorityParams
 
@@ -793,9 +918,9 @@
 
 ### AggregatorSetVarianceThresholdParams
 
-| Field             | Type         |
-| ----------------- | ------------ |
-| varianceThreshold | BorshDecimal |
+| Field             | Type                          |
+| ----------------- | ----------------------------- |
+| varianceThreshold | [BorshDecimal](#borshdecimal) |
 
 ### CrankInitParams
 
@@ -880,20 +1005,20 @@
 
 ### OracleQueueInitParams
 
-| Field                         | Type         |
-| ----------------------------- | ------------ |
-| name                          | u8[32]       |
-| metadata                      | u8[64]       |
-| reward                        | u64          |
-| minStake                      | u64          |
-| feedProbationPeriod           | u32          |
-| oracleTimeout                 | u32          |
-| slashingEnabled               | bool         |
-| varianceToleranceMultiplier   | BorshDecimal |
-| consecutiveFeedFailureLimit   | u64          |
-| consecutiveOracleFailureLimit | u64          |
-| queueSize                     | u32          |
-| unpermissionedFeeds           | bool         |
+| Field                         | Type                          |
+| ----------------------------- | ----------------------------- |
+| name                          | u8[32]                        |
+| metadata                      | u8[64]                        |
+| reward                        | u64                           |
+| minStake                      | u64                           |
+| feedProbationPeriod           | u32                           |
+| oracleTimeout                 | u32                           |
+| slashingEnabled               | bool                          |
+| varianceToleranceMultiplier   | [BorshDecimal](#borshdecimal) |
+| consecutiveFeedFailureLimit   | u64                           |
+| consecutiveOracleFailureLimit | u64                           |
+| queueSize                     | u32                           |
+| unpermissionedFeeds           | bool                          |
 
 ### OracleQueueSetRewardsParams
 
@@ -917,10 +1042,10 @@
 
 ### PermissionSetParams
 
-| Field      | Type                  |
-| ---------- | --------------------- |
-| permission | SwitchboardPermission |
-| enable     | bool                  |
+| Field      | Type                                            |
+| ---------- | ----------------------------------------------- |
+| permission | [SwitchboardPermission](#switchboardpermission) |
+| enable     | bool                                            |
 
 ### ProgramConfigParams
 
@@ -943,29 +1068,29 @@
 
 ### AggregatorRound
 
-| Field              | Type                   |
-| ------------------ | ---------------------- |
-| numSuccess         | u32                    |
-| numError           | u32                    |
-| isClosed           | bool                   |
-| roundOpenSlot      | u64                    |
-| roundOpenTimestamp | i64                    |
-| result             | SwitchboardDecimal     |
-| stdDeviation       | SwitchboardDecimal     |
-| minResponse        | SwitchboardDecimal     |
-| maxResponse        | SwitchboardDecimal     |
-| oraclePubkeysData  | publicKey[16]          |
-| mediansData        | SwitchboardDecimal[16] |
-| currentPayout      | i64[16]                |
-| mediansFulfilled   | bool[16]               |
-| errorsFulfilled    | bool[16]               |
+| Field              | Type                                          |
+| ------------------ | --------------------------------------------- |
+| numSuccess         | u32                                           |
+| num[Error](#error) | u32                                           |
+| isClosed           | bool                                          |
+| roundOpenSlot      | u64                                           |
+| roundOpenTimestamp | i64                                           |
+| result             | [SwitchboardDecimal](#switchboarddecimal)     |
+| stdDeviation       | [SwitchboardDecimal](#switchboarddecimal)     |
+| minResponse        | [SwitchboardDecimal](#switchboarddecimal)     |
+| maxResponse        | [SwitchboardDecimal](#switchboarddecimal)     |
+| oraclePubkeysData  | publicKey[16]                                 |
+| mediansData        | [SwitchboardDecimal](#switchboarddecimal)[16] |
+| currentPayout      | i64[16]                                       |
+| mediansFulfilled   | bool[16]                                      |
+| errorsFulfilled    | bool[16]                                      |
 
 ### AggregatorHistoryRow
 
-| Field     | Type               |
-| --------- | ------------------ |
-| timestamp | i64                |
-| value     | SwitchboardDecimal |
+| Field     | Type                                      |
+| --------- | ----------------------------------------- |
+| timestamp | i64                                       |
+| value     | [SwitchboardDecimal](#switchboarddecimal) |
 
 ### SwitchboardDecimal
 
@@ -995,17 +1120,17 @@
 
 ### OracleMetrics
 
-| Field                   | Type |
-| ----------------------- | ---- |
-| consecutiveSuccess      | u64  |
-| consecutiveError        | u64  |
-| consecutiveDisagreement | u64  |
-| consecutiveLateResponse | u64  |
-| consecutiveFailure      | u64  |
-| totalSuccess            | u128 |
-| totalError              | u128 |
-| totalDisagreement       | u128 |
-| totalLateResponse       | u128 |
+| Field                      | Type |
+| -------------------------- | ---- |
+| consecutiveSuccess         | u64  |
+| consecutive[Error](#error) | u64  |
+| consecutiveDisagreement    | u64  |
+| consecutiveLateResponse    | u64  |
+| consecutiveFailure         | u64  |
+| totalSuccess               | u128 |
+| total[Error](#error)       | u128 |
+| totalDisagreement          | u128 |
+| totalLateResponse          | u128 |
 
 ### BorshDecimal
 
@@ -1030,84 +1155,84 @@
 
 ### OracleResponseType
 
-| Name             | Value |
-| ---------------- | ----- |
-| TypeSuccess      | 1     |
-| TypeError        | 2     |
-| TypeDisagreement | 3     |
-| TypeNoResponse   | 4     |
+| Name                | Value |
+| ------------------- | ----- |
+| TypeSuccess         | 1     |
+| Type[Error](#error) | 2     |
+| TypeDisagreement    | 3     |
+| TypeNoResponse      | 4     |
 
 ### Error
 
-| Name                 | Value |
-| -------------------- | ----- |
-| InvalidPublicKey     | 1     |
-| SerializationError   | 2     |
-| DeserializationError | 3     |
-| InvalidDataError     | 4     |
+| Name                           | Value |
+| ------------------------------ | ----- |
+| InvalidPublicKey               | 1     |
+| Serialization[Error](#error)   | 2     |
+| Deserialization[Error](#error) | 3     |
+| InvalidData[Error](#error)     | 4     |
 
 ## Errors
 
-| Code | Name                             | Message                                                                     |
-| ---- | -------------------------------- | --------------------------------------------------------------------------- |
-| 6000 | ArrayOperationError              | Illegal operation on a Switchboard array.                                   |
-| 6001 | QueueOperationError              | Illegal operation on a Switchboard queue.                                   |
-| 6002 | IncorrectProgramOwnerError       | An account required to be owned by the program has a different owner.       |
-| 6003 | InvalidAggregatorRound           | Aggregator is not currently populated with a valid round.                   |
-| 6004 | TooManyAggregatorJobs            | Aggregator cannot fit any more jobs.                                        |
-| 6005 | AggregatorCurrentRoundClosed     | Aggregator's current round is closed. No results are being accepted.        |
-| 6006 | AggregatorInvalidSaveResult      | Aggregator received an invalid save result instruction.                     |
-| 6007 | InvalidStrDecimalConversion      | Failed to convert string to decimal format.                                 |
-| 6008 | AccountLoaderMissingSignature    | AccountLoader account is missing a required signature.                      |
-| 6009 | MissingRequiredSignature         | Account is missing a required signature.                                    |
-| 6010 | ArrayOverflowError               | The attempted action will overflow a zero-copy account array.               |
-| 6011 | ArrayUnderflowError              | The attempted action will underflow a zero-copy account array.              |
-| 6012 | PubkeyNotFoundError              | The queried public key was not found.                                       |
-| 6013 | AggregatorIllegalRoundOpenCall   | Aggregator round open called too early.                                     |
-| 6014 | AggregatorIllegalRoundCloseCall  | Aggregator round close called too early.                                    |
-| 6015 | AggregatorClosedError            | Aggregator is closed. Illegal aciton.                                       |
-| 6016 | IllegalOracleIdxError            | Illegal oracle index.                                                       |
-| 6017 | OracleAlreadyRespondedError      | The provided oracle has already responded this round.                       |
-| 6018 | ProtoDeserializeError            | Failed to deserialize protocol buffer.                                      |
-| 6019 | UnauthorizedStateUpdateError     | Unathorized program state modification attempted.                           |
-| 6020 | MissingOracleAccountsError       | Not enough oracle accounts provided to closeRounds.                         |
-| 6021 | OracleMismatchError              | An unexpected oracle account was provided for the transaction.              |
-| 6022 | CrankMaxCapacityError            | Attempted to push to a Crank that's at capacity                             |
-| 6023 | AggregatorLeaseInsufficientFunds | Aggregator update call attempted but attached lease has insufficient funds. |
-| 6024 | IncorrectTokenAccountMint        | The provided token account does not point to the Switchbaord token mint.    |
-| 6025 | InvalidEscrowAccount             | An invalid escrow account was provided.                                     |
-| 6026 | CrankEmptyError                  | Crank empty. Pop failed.                                                    |
-| 6027 | PdaDeriveError                   | Failed to derive a PDA from the provided seed.                              |
-| 6028 | AggregatorAccountNotFound        | Aggregator account missing from provided account list.                      |
-| 6029 | PermissionAccountNotFound        | Permission account missing from provided account list.                      |
-| 6030 | LeaseAccountDeriveFailure        | Failed to derive a lease account.                                           |
-| 6031 | PermissionAccountDeriveFailure   | Failed to derive a permission account.                                      |
-| 6032 | EscrowAccountNotFound            | Escrow account missing from provided account list.                          |
-| 6033 | LeaseAccountNotFound             | Lease account missing from provided account list.                           |
-| 6034 | DecimalConversionError           | Decimal conversion method failed.                                           |
-| 6035 | PermissionDenied                 | Permission account is missing required flags for the given action.          |
-| 6036 | QueueAtCapacity                  | Oracle queue is at lease capacity.                                          |
-| 6037 | ExcessiveCrankRowsError          | Data feed is already pushed on a crank.                                     |
-| 6038 | AggregatorLockedError            | Aggregator is locked, no setting modifications or job additions allowed.    |
-| 6039 | AggregatorInvalidBatchSizeError  | Aggregator invalid batch size.                                              |
-| 6040 | AggregatorJobChecksumMismatch    | Oracle provided an incorrect aggregator job checksum.                       |
-| 6041 | IntegerOverflowError             | An integer overflow occurred.                                               |
-| 6042 | InvalidUpdatePeriodError         | Mimimum update period is 5 seconds.                                         |
-| 6043 | NoResultsError                   | Aggregator round evaluation attempted with no results.                      |
-| 6044 | InvalidExpirationError           | An expiration constraint was broken.                                        |
-| 6045 | InsufficientStakeError           | An account provided insufficient stake for aciton.                          |
-| 6046 | LeaseInactiveError               | The provided lease account is not active.                                   |
-| 6047 | NoAggregatorJobsFound            | No jobs are currently included in the aggregator.                           |
-| 6048 | IntegerUnderflowError            | An integer underflow occurred.                                              |
-| 6049 | OracleQueueMismatch              | An invalid oracle queue account was provided.                               |
-| 6050 | OracleWalletMismatchError        | An unexpected oracle wallet account was provided for the transaction.       |
-| 6051 | InvalidBufferAccountError        | An invalid buffer account was provided.                                     |
-| 6052 | InsufficientOracleQueueError     | Insufficient oracle queue size.                                             |
-| 6053 | InvalidAuthorityError            | Invalid authority account provided.                                         |
-| 6054 | InvalidTokenAccountMintError     | A provided token wallet is associated with an incorrect mint.               |
-| 6055 | ExcessiveLeaseWithdrawlError     | You must leave enough funds to perform at least 1 update in the lease.      |
-| 6056 | InvalideHistoryAccountError      | Invalid history account provided.                                           |
-| 6057 | InvalidLeaseAccountEscrowError   | Invalid lease account escrow.                                               |
-| 6058 | InvalidCrankAccountError         | Invalid crank provided.                                                     |
-| 6059 | CrankNoElementsReadyError        | No elements ready to be popped.                                             |
-| 6060 | VrfVerifyError                   | Error in verifying vrf proof.                                               |
+| Code | Name                                           | Message                                                                     |
+| ---- | ---------------------------------------------- | --------------------------------------------------------------------------- |
+| 6000 | ArrayOperation[Error](#error)                  | Illegal operation on a Switchboard array.                                   |
+| 6001 | QueueOperation[Error](#error)                  | Illegal operation on a Switchboard queue.                                   |
+| 6002 | IncorrectProgramOwner[Error](#error)           | An account required to be owned by the program has a different owner.       |
+| 6003 | Invalid[AggregatorRound](#aggregatorround)     | Aggregator is not currently populated with a valid round.                   |
+| 6004 | TooManyAggregatorJobs                          | Aggregator cannot fit any more jobs.                                        |
+| 6005 | AggregatorCurrentRoundClosed                   | Aggregator's current round is closed. No results are being accepted.        |
+| 6006 | AggregatorInvalidSaveResult                    | Aggregator received an invalid save result instruction.                     |
+| 6007 | InvalidStrDecimalConversion                    | Failed to convert string to decimal format.                                 |
+| 6008 | AccountLoaderMissingSignature                  | AccountLoader account is missing a required signature.                      |
+| 6009 | MissingRequiredSignature                       | Account is missing a required signature.                                    |
+| 6010 | ArrayOverflow[Error](#error)                   | The attempted action will overflow a zero-copy account array.               |
+| 6011 | ArrayUnderflow[Error](#error)                  | The attempted action will underflow a zero-copy account array.              |
+| 6012 | PubkeyNotFound[Error](#error)                  | The queried public key was not found.                                       |
+| 6013 | AggregatorIllegalRoundOpenCall                 | Aggregator round open called too early.                                     |
+| 6014 | AggregatorIllegalRoundCloseCall                | Aggregator round close called too early.                                    |
+| 6015 | AggregatorClosed[Error](#error)                | Aggregator is closed. Illegal aciton.                                       |
+| 6016 | IllegalOracleIdx[Error](#error)                | Illegal oracle index.                                                       |
+| 6017 | OracleAlreadyResponded[Error](#error)          | The provided oracle has already responded this round.                       |
+| 6018 | ProtoDeserialize[Error](#error)                | Failed to deserialize protocol buffer.                                      |
+| 6019 | UnauthorizedStateUpdate[Error](#error)         | Unathorized program state modification attempted.                           |
+| 6020 | MissingOracleAccounts[Error](#error)           | Not enough oracle accounts provided to closeRounds.                         |
+| 6021 | OracleMismatch[Error](#error)                  | An unexpected oracle account was provided for the transaction.              |
+| 6022 | CrankMaxCapacity[Error](#error)                | Attempted to push to a Crank that's at capacity                             |
+| 6023 | AggregatorLeaseInsufficientFunds               | Aggregator update call attempted but attached lease has insufficient funds. |
+| 6024 | IncorrectTokenAccountMint                      | The provided token account does not point to the Switchbaord token mint.    |
+| 6025 | InvalidEscrowAccount                           | An invalid escrow account was provided.                                     |
+| 6026 | CrankEmpty[Error](#error)                      | Crank empty. Pop failed.                                                    |
+| 6027 | PdaDerive[Error](#error)                       | Failed to derive a PDA from the provided seed.                              |
+| 6028 | AggregatorAccountNotFound                      | Aggregator account missing from provided account list.                      |
+| 6029 | PermissionAccountNotFound                      | Permission account missing from provided account list.                      |
+| 6030 | LeaseAccountDeriveFailure                      | Failed to derive a lease account.                                           |
+| 6031 | PermissionAccountDeriveFailure                 | Failed to derive a permission account.                                      |
+| 6032 | EscrowAccountNotFound                          | Escrow account missing from provided account list.                          |
+| 6033 | LeaseAccountNotFound                           | Lease account missing from provided account list.                           |
+| 6034 | DecimalConversion[Error](#error)               | Decimal conversion method failed.                                           |
+| 6035 | PermissionDenied                               | Permission account is missing required flags for the given action.          |
+| 6036 | QueueAtCapacity                                | Oracle queue is at lease capacity.                                          |
+| 6037 | Excessive[CrankRow](#crankrow)s[Error](#error) | Data feed is already pushed on a crank.                                     |
+| 6038 | AggregatorLocked[Error](#error)                | Aggregator is locked, no setting modifications or job additions allowed.    |
+| 6039 | AggregatorInvalidBatchSize[Error](#error)      | Aggregator invalid batch size.                                              |
+| 6040 | AggregatorJobChecksumMismatch                  | Oracle provided an incorrect aggregator job checksum.                       |
+| 6041 | IntegerOverflow[Error](#error)                 | An integer overflow occurred.                                               |
+| 6042 | InvalidUpdatePeriod[Error](#error)             | Mimimum update period is 5 seconds.                                         |
+| 6043 | NoResults[Error](#error)                       | Aggregator round evaluation attempted with no results.                      |
+| 6044 | InvalidExpiration[Error](#error)               | An expiration constraint was broken.                                        |
+| 6045 | InsufficientStake[Error](#error)               | An account provided insufficient stake for aciton.                          |
+| 6046 | LeaseInactive[Error](#error)                   | The provided lease account is not active.                                   |
+| 6047 | NoAggregatorJobsFound                          | No jobs are currently included in the aggregator.                           |
+| 6048 | IntegerUnderflow[Error](#error)                | An integer underflow occurred.                                              |
+| 6049 | OracleQueueMismatch                            | An invalid oracle queue account was provided.                               |
+| 6050 | OracleWalletMismatch[Error](#error)            | An unexpected oracle wallet account was provided for the transaction.       |
+| 6051 | InvalidBufferAccount[Error](#error)            | An invalid buffer account was provided.                                     |
+| 6052 | InsufficientOracleQueue[Error](#error)         | Insufficient oracle queue size.                                             |
+| 6053 | InvalidAuthority[Error](#error)                | Invalid authority account provided.                                         |
+| 6054 | InvalidTokenAccountMint[Error](#error)         | A provided token wallet is associated with an incorrect mint.               |
+| 6055 | ExcessiveLeaseWithdrawl[Error](#error)         | You must leave enough funds to perform at least 1 update in the lease.      |
+| 6056 | InvalideHistoryAccount[Error](#error)          | Invalid history account provided.                                           |
+| 6057 | InvalidLeaseAccountEscrow[Error](#error)       | Invalid lease account escrow.                                               |
+| 6058 | InvalidCrankAccount[Error](#error)             | Invalid crank provided.                                                     |
+| 6059 | CrankNoElementsReady[Error](#error)            | No elements ready to be popped.                                             |
+| 6060 | VrfVerify[Error](#error)                       | Error in verifying vrf proof.                                               |
