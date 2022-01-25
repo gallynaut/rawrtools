@@ -13,7 +13,33 @@ export async function idl2markdown(
   let fileString = "";
 
   // Write heading 1
-  const header = `# ${idl.name} (${idl.version})`;
+  fileString += `# ${idl.name} (${idl.version})\n`;
+
+  // create table of contents
+
+  fileString += `## Table of Contents\n`;
+
+  fileString += `* [Accounts](#accounts)\n`;
+  const accountNames = getNames(idl.accounts);
+  for (const name of accountNames) {
+    fileString += `    * ${name}\n`;
+  }
+  fileString += `* [Instructions](#instructions)\n`;
+  const instructionNames = getNames(idl.instructions);
+  for (const name of instructionNames) {
+    fileString += `    * ${name}\n`;
+  }
+  fileString += `* [Events](#events)\n`;
+  const eventNames = getNames(idl.events);
+  for (const name of eventNames) {
+    fileString += `    * ${name}\n`;
+  }
+  fileString += `* [Types](#types)\n`;
+  const typeNames = getNames(idl.types);
+  for (const name of typeNames) {
+    fileString += `    * ${name}\n`;
+  }
+  fileString += `* [Errors](#errors)\n`;
 
   const accounts = getAccounts(idl);
   const instructions = getInstructions(idl);
@@ -21,8 +47,7 @@ export async function idl2markdown(
   const types = getTypes(idl);
   const events = getEvents(idl);
 
-  fileString =
-    header +
+  fileString +=
     "\n## Accounts\n" +
     printRecord(accounts) +
     "\n## Instructions\n" +
