@@ -1,9 +1,9 @@
 ## Accounts
-|Name|isMut|isSigner|
-|--|--|--|
-| aggregator | true | false |
-| authority | true | true |
+|Name|isMut|isSigner|Description|
+|--|--|--|--|
+| aggregator | true | false |  |
+| authority | true | true |  |
 ## Args
-|Name|Type|
-|--|--|
-| params | [AggregatorLockParams](/program/types/aggregatorlockparams) |
+|Name|Type|Description|
+|--|--|--|
+| params | [AggregatorLockParams](/program/types/aggregatorlockparams) |  |

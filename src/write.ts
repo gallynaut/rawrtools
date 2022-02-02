@@ -39,13 +39,14 @@ export function writeAccount(
       outputString += `| ${value.name} |  ${value?.other?.type ?? "N/A"} | |\n`;
     });
   }
+
   fs.writeFileSync(
     path.join(outputPath, `${item.name}.md`),
     insertHyperlinks(outputString, hyperlinks)
   );
 }
 
-export function writeInstructions(
+export function writeInstruction(
   item: AnchorItem,
   outputPath: string,
   hyperlinks: Record<string, string>
@@ -69,8 +70,24 @@ export function writeInstructions(
       outputString += `| ${value.name} | ${value.other?.type ?? "N/A"} |  |\n`;
     });
   }
+
   fs.writeFileSync(
     path.join(outputPath, `${item.name}.md`),
     insertHyperlinks(outputString, hyperlinks)
   );
+}
+
+export function writeEvent(
+  item: AnchorItem,
+  outputPath: string,
+  hyperlinks: Record<string, string>
+) {
+  let outputString = "";
+  outputString += `| Name | Type | Description |\n|--|--|--|\n`;
+  item.children?.forEach((value) => {
+    outputString += `| ${value.name} | ${value.other?.type ?? "N/A"} | |\n`;
+  });
+
+  const fileString = insertHyperlinks(outputString, hyperlinks);
+  fs.writeFileSync(path.join(outputPath, `${item.name}.md`), fileString);
 }

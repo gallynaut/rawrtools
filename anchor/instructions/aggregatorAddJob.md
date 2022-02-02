@@ -1,10 +1,10 @@
 ## Accounts
-|Name|isMut|isSigner|
-|--|--|--|
-| aggregator | true | false |
-| authority | false | true |
-| job | true | false |
+|Name|isMut|isSigner|Description|
+|--|--|--|--|
+| aggregator | true | false |  |
+| authority | false | true |  |
+| job | true | false |  |
 ## Args
-|Name|Type|
-|--|--|
-| params | [AggregatorAddJobParams](/program/types/aggregatoraddjobparams) |
+|Name|Type|Description|
+|--|--|--|
+| params | [AggregatorAddJobParams](/program/types/aggregatoraddjobparams) |  |

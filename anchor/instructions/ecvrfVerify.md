@@ -1,9 +1,8 @@
 ## Accounts
-|Name|isMut|isSigner|
-|--|--|--|
-| randomnessProducer | false | false |
+|Name|isMut|isSigner|Description|
+|--|--|--|--|
+| randomnessProducer | false | false |  |
 ## Args
-| Field | Type | Description |
+|Name|Type|Description|
 |--|--|--|
-| proof |  bytes | |
-| alpha |  bytes | |
+| params | [EcvrfVerifyParams](/program/types/ecvrfverifyparams) |  |

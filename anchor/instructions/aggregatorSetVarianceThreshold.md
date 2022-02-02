@@ -1,9 +1,9 @@
 ## Accounts
-|Name|isMut|isSigner|
-|--|--|--|
-| aggregator | true | false |
-| authority | false | true |
+|Name|isMut|isSigner|Description|
+|--|--|--|--|
+| aggregator | true | false |  |
+| authority | false | true |  |
 ## Args
-| Field | Type | Description |
+|Name|Type|Description|
 |--|--|--|
-| varianceThreshold |  [BorshDecimal](/program/types/borshdecimal) | |
+| params | [AggregatorSetVarianceThresholdParams](/program/types/aggregatorsetvariancethresholdparams) |  |

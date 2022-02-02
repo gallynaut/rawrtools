@@ -1,13 +1,13 @@
 ## Accounts
-|Name|isMut|isSigner|
-|--|--|--|
-| permission | true | false |
-| authority | false | false |
-| granter | false | false |
-| grantee | false | false |
-| payer | true | true |
-| systemProgram | false | false |
+|Name|isMut|isSigner|Description|
+|--|--|--|--|
+| permission | true | false |  |
+| authority | false | false |  |
+| granter | false | false |  |
+| grantee | false | false |  |
+| payer | true | true |  |
+| systemProgram | false | false |  |
 ## Args
-| Field | Type | Description |
+|Name|Type|Description|
 |--|--|--|
-| permissionBump |  u8 | |
+| params | [PermissionInitParams](/program/types/permissioninitparams) |  |

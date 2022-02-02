@@ -1,10 +1,9 @@
 ## Accounts
-|Name|isMut|isSigner|
-|--|--|--|
-| permission | true | false |
-| authority | false | true |
+|Name|isMut|isSigner|Description|
+|--|--|--|--|
+| permission | true | false |  |
+| authority | false | true |  |
 ## Args
-| Field | Type | Description |
+|Name|Type|Description|
 |--|--|--|
-| permission |  [SwitchboardPermission](/program/types/switchboardpermission) | |
-| enable |  bool | |
+| params | [PermissionSetParams](/program/types/permissionsetparams) |  |

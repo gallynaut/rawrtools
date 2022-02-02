@@ -1,9 +1,9 @@
 ## Accounts
-|Name|isMut|isSigner|
-|--|--|--|
-| aggregator | true | false |
-| authority | false | true |
+|Name|isMut|isSigner|Description|
+|--|--|--|--|
+| aggregator | true | false |  |
+| authority | false | true |  |
 ## Args
-| Field | Type | Description |
+|Name|Type|Description|
 |--|--|--|
-| batchSize |  u32 | |
+| params | [AggregatorSetBatchSizeParams](/program/types/aggregatorsetbatchsizeparams) |  |

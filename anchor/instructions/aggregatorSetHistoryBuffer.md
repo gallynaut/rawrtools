@@ -1,10 +1,10 @@
 ## Accounts
-|Name|isMut|isSigner|
-|--|--|--|
-| aggregator | true | false |
-| authority | false | true |
-| buffer | true | false |
+|Name|isMut|isSigner|Description|
+|--|--|--|--|
+| aggregator | true | false |  |
+| authority | false | true |  |
+| buffer | true | false |  |
 ## Args
-|Name|Type|
-|--|--|
-| params | [AggregatorSetHistoryBufferParams](/program/types/aggregatorsethistorybufferparams) |
+|Name|Type|Description|
+|--|--|--|
+| params | [AggregatorSetHistoryBufferParams](/program/types/aggregatorsethistorybufferparams) |  |

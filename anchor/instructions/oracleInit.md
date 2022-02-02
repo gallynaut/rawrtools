@@ -1,17 +1,14 @@
 ## Accounts
-|Name|isMut|isSigner|
-|--|--|--|
-| oracle | true | false |
-| oracleAuthority | false | false |
-| wallet | false | false |
-| programState | false | false |
-| queue | false | false |
-| payer | false | false |
-| systemProgram | false | false |
+|Name|isMut|isSigner|Description|
+|--|--|--|--|
+| oracle | true | false |  |
+| oracleAuthority | false | false |  |
+| wallet | false | false |  |
+| programState | false | false |  |
+| queue | false | false |  |
+| payer | false | false |  |
+| systemProgram | false | false |  |
 ## Args
-| Field | Type | Description |
+|Name|Type|Description|
 |--|--|--|
-| name |  bytes | |
-| metadata |  bytes | |
-| stateBump |  u8 | |
-| oracleBump |  u8 | |
+| params | [OracleInitParams](/program/types/oracleinitparams) |  |

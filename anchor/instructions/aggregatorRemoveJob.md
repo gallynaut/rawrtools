@@ -1,10 +1,10 @@
 ## Accounts
-|Name|isMut|isSigner|
-|--|--|--|
-| aggregator | true | false |
-| authority | false | true |
-| job | true | false |
+|Name|isMut|isSigner|Description|
+|--|--|--|--|
+| aggregator | true | false |  |
+| authority | false | true |  |
+| job | true | false |  |
 ## Args
-| Field | Type | Description |
+|Name|Type|Description|
 |--|--|--|
-| jobIdx |  u32 | |
+| params | [AggregatorRemoveJobParams](/program/types/aggregatorremovejobparams) |  |

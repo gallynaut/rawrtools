@@ -1,9 +1,9 @@
 ## Accounts
-|Name|isMut|isSigner|
-|--|--|--|
-| queue | true | false |
-| authority | false | true |
+|Name|isMut|isSigner|Description|
+|--|--|--|--|
+| queue | true | false |  |
+| authority | false | true |  |
 ## Args
-| Field | Type | Description |
+|Name|Type|Description|
 |--|--|--|
-| rewards |  u64 | |
+| params | [OracleQueueSetRewardsParams](/program/types/oraclequeuesetrewardsparams) |  |
