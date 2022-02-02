@@ -1,3 +1,3 @@
-| Name       | Type      | Description |
-| ---------- | --------- | ----------- |
-| feedPubkey | publicKey |             |
+| Name | Type | Description |
+|--|--|--|
+| feedPubkey | publicKey | |

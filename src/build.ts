@@ -4,7 +4,16 @@ import path from "path";
 import fs from "fs";
 import { AnchorItemCollection, AnchorItem } from "./types";
 import { propertiesToArray } from "./utils/walkStruct";
-import { writeAccount, writeEvent, writeInstruction } from "./write";
+import {
+  writeAccount,
+  writeErrors,
+  writeEvent,
+  writeInstruction,
+  writeLongToc,
+  writeOverview,
+  writeShortToc,
+  writeType,
+} from "./write";
 
 // only handles top level links, not anchor links
 export function buildHyperlinks(
@@ -48,21 +57,65 @@ export async function buildIdl(
   const parsedIdl = parseIdl(idl, basePath);
   const hyperlinks = buildHyperlinks(parsedIdl);
 
+  writeShortToc(defaultPath);
+  writeLongToc(parsedIdl, defaultPath, hyperlinks);
+
   const accountPath = path.join(defaultPath, "accounts");
   fs.mkdirSync(accountPath, { recursive: true });
+  writeOverview(
+    parsedIdl.accounts,
+    accountPath,
+    hyperlinks,
+    "/program/accounts",
+    "Accounts",
+    10
+  );
+
   for (const item of parsedIdl.accounts) {
     writeAccount(item, accountPath, hyperlinks);
   }
 
   const instructionPath = path.join(defaultPath, "instructions");
   fs.mkdirSync(instructionPath, { recursive: true });
+  writeOverview(
+    parsedIdl.instructions,
+    instructionPath,
+    hyperlinks,
+    "/program/instructions",
+    "Instructions",
+    20
+  );
   for (const item of parsedIdl.instructions) {
     writeInstruction(item, instructionPath, hyperlinks);
   }
 
   const eventPath = path.join(defaultPath, "events");
   fs.mkdirSync(eventPath, { recursive: true });
+  writeOverview(
+    parsedIdl.events,
+    eventPath,
+    hyperlinks,
+    "/program/events",
+    "Events",
+    30
+  );
   for (const item of parsedIdl.events) {
     writeEvent(item, eventPath, hyperlinks);
   }
+
+  const typePath = path.join(defaultPath, "types");
+  fs.mkdirSync(typePath, { recursive: true });
+  writeOverview(
+    parsedIdl.types,
+    typePath,
+    hyperlinks,
+    "/program/types",
+    "Types",
+    40
+  );
+  for (const item of parsedIdl.types) {
+    writeType(item, typePath, hyperlinks);
+  }
+
+  writeErrors(parsedIdl.errors, defaultPath, 50);
 }

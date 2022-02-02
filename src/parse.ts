@@ -107,6 +107,9 @@ export function buildTypeCollecton(
         return {
           name: field.name,
           type: "field",
+          other: {
+            type: getIdlTypeString(field.type),
+          },
         };
       }),
     };
@@ -238,6 +241,7 @@ export function buildErrorCollection(
         other: {
           code: error.code.toString(10),
           hex: `0x${error.code.toString(16)}`,
+          msg: error.msg ?? "",
         },
       };
     }
@@ -260,10 +264,10 @@ export function parseIdl(
   const errors = buildErrorCollection(idl, basePath);
 
   return {
-    accounts,
-    types,
-    instructions,
-    events,
+    accounts: accounts.sort((a, b) => a.name.localeCompare(b.name)),
+    types: types.sort((a, b) => a.name.localeCompare(b.name)),
+    instructions: instructions.sort((a, b) => a.name.localeCompare(b.name)),
+    events: events.sort((a, b) => a.name.localeCompare(b.name)),
     errors,
   };
 }
