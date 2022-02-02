@@ -1,0 +1,14 @@
+{
+  "accounts": [
+    {
+      "AggregatorAccountData": {
+        "description": "",
+        "fields": [
+          {
+            "oracle_request_batch_size": "affects update price, shouldnt be changeable"
+          }
+        ]
+      }
+    }
+  ]
+}

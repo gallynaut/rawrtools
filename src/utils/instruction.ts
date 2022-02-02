@@ -30,10 +30,13 @@ function getIsSigner(account: idl.IdlAccountItem): string {
   return "UNK";
 }
 
-export function toInstructionString(instruction: idl.IdlInstruction): string {
-  let outputString = `### ${instruction.name}\n`;
+export function toInstructionString(
+  instruction: idl.IdlInstruction,
+  types?: Record<string, string>
+): string {
+  let outputString = "";
   if (instruction.accounts.length > 0) {
-    outputString += `#### Accounts\n|Name|isMut|isSigner|\n|--|--|--|\n`;
+    outputString += `## Accounts\n|Name|isMut|isSigner|\n|--|--|--|\n`;
     instruction.accounts.forEach((value) => {
       outputString += `| ${value.name} | ${getIsMut(value)} | ${getIsSigner(
         value
@@ -41,19 +44,30 @@ export function toInstructionString(instruction: idl.IdlInstruction): string {
     });
   }
   if (instruction.args.length > 0) {
-    outputString += `#### Args\n|Name|Type|\n|--|--|\n`;
-    instruction.args.forEach((value) => {
-      outputString += `| ${value.name} | ${getIdlTypeString(value.type)} |\n`;
-    });
+    if (
+      instruction.args.length === 1 &&
+      types?.hasOwnProperty(getIdlTypeString(instruction.args[0].type))
+    ) {
+      outputString += `## Args\n`;
+      outputString += types[getIdlTypeString(instruction.args[0].type)];
+    } else {
+      outputString += `## Args\n|Name|Type|\n|--|--|\n`;
+      instruction.args.forEach((value) => {
+        outputString += `| ${value.name} | ${getIdlTypeString(value.type)} |\n`;
+      });
+    }
   }
 
   return outputString;
 }
 
-export function getInstructions(idl: anchor.Idl): Record<string, string> {
+export function getInstructions(
+  idl: anchor.Idl,
+  types?: Record<string, string>
+): Record<string, string> {
   const instructionMap: Record<string, string> = {};
   idl.instructions.forEach((value) => {
-    instructionMap[value.name] = toInstructionString(value);
+    instructionMap[value.name] = toInstructionString(value, types);
   });
   return instructionMap;
 }

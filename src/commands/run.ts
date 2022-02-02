@@ -4,6 +4,7 @@ import { clusterApiUrl, Connection, Keypair, PublicKey } from "@solana/web3.js";
 import { idl2markdown } from "../utils/convert";
 import path from "path";
 import fs from "fs";
+import { buildIdl } from "../build";
 
 export default class RunCommand extends Command {
   static description = "Convert an anchor IDL to a markdown page";
@@ -65,14 +66,16 @@ export default class RunCommand extends Command {
     );
 
     const outputPath = getOutputPath(flags.output, flags.mdx);
-    console.log(`output: ${outputPath}`);
-    const outputFileString = await idl2markdown(idl, {
-      mdx: flags.mdx,
-      multi: flags.multi,
-      outputPath: path.dirname(outputPath),
-      outputFile: path.parse(outputPath).base,
-    });
-    fs.writeFileSync(outputPath, outputFileString);
+    flags.multi
+      ? console.log(`outputPath: ${path.dirname(outputPath)}`)
+      : console.log(`outputFile: ${path.parse(outputPath).base}`);
+    // await idl2markdown(idl, {
+    //   mdx: flags.mdx,
+    //   multi: flags.multi,
+    //   outputPath: path.dirname(outputPath),
+    //   outputFile: path.parse(outputPath).base,
+    // });
+    await buildIdl(idl);
   }
 
   async catch(error: any) {

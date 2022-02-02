@@ -11,13 +11,11 @@ export function getEvents(idl: anchor.Idl): Record<string, string> {
 }
 
 export function toEventString(event: idl.IdlEvent): string {
-  let outputString = `### ${event.name}\n`;
+  let outputString = "";
   if (event.fields) {
-    outputString += `| Name | Type | Index |\n|--|--|--|\n`;
+    outputString += `| Name | Type | Description |\n|--|--|--|\n`;
     event.fields.forEach((value) => {
-      outputString += `| ${value.name} | ${getIdlTypeString(value.type)} | ${
-        value.index
-      }|\n`;
+      outputString += `| ${value.name} | ${getIdlTypeString(value.type)} | |\n`;
     });
   }
 

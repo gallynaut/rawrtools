@@ -13,17 +13,19 @@ export function getAccounts(idl: anchor.Idl): Record<string, string> {
 }
 
 export function toAccountString(account: idl.IdlTypeDef): string {
-  let outputString = `### ${account.name}\n`;
+  let outputString = "";
   if (account.type.kind === "enum") {
-    outputString += `| Name | Value |\n|--|--|\n`;
+    outputString += `| Name | Value | Description |\n|--|--|--|\n`;
     account.type.variants.forEach((value, index) => {
-      outputString += `| ${value.name} | ${index + 1} |\n`;
+      outputString += `| ${value.name} | ${index + 1} | |\n`;
     });
     return outputString;
   } else if (account.type.kind === "struct") {
-    outputString += `| Field | Type |\n|--|--|\n`;
+    outputString += `| Field | Type | Description |\n|--|--|--|\n`;
     account.type.fields.forEach((value, index) => {
-      outputString += `| ${value.name} |  ${getIdlTypeString(value.type)} |\n`;
+      outputString += `| ${value.name} |  ${getIdlTypeString(
+        value.type
+      )} | |\n`;
     });
   }
   return outputString;

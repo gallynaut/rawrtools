@@ -1,5 +1,7 @@
 import * as anchor from "@project-serum/anchor";
 import * as idl from "@project-serum/anchor/dist/cjs/idl";
+import path from "path";
+import fs from "fs";
 import { getAccounts } from "./account";
 import { getErrors } from "./error";
 import { getEvents } from "./event";
@@ -13,21 +15,46 @@ export interface IdlToMarkdownConfig {
   outputFile: string;
 }
 
+type insertHyperlinksFn = (
+  fileString: string,
+  hyperlinks: Record<string, string>
+) => string;
+
 export async function idl2markdown(
   idl: anchor.Idl,
   config: IdlToMarkdownConfig
-): Promise<string> {
+): Promise<void> {
   let fileString = `# ${idl.name} (${idl.version})\n`;
 
   const hyperlinks = getHyperlinks(idl, config.multi);
 
-  fileString += buildTableOfContents(idl);
-
   const accounts = getAccounts(idl);
-  const instructions = getInstructions(idl);
-  const errors = getErrors(idl);
   const types = getTypes(idl);
+  const instructions = getInstructions(idl, types);
+  const errors = getErrors(idl);
   const events = getEvents(idl);
+
+  if (config.multi) {
+    const basePath = path.join(config.outputPath, "anchor");
+    writeRecord(accounts, basePath, "Accounts", hyperlinks, 10);
+    writeRecord(instructions, basePath, "Instructions", hyperlinks, 20);
+    writeRecord(events, basePath, "Events", hyperlinks, 30);
+    writeRecord(types, basePath, "Types", hyperlinks, 40);
+    const toc = insertHyperlinks(
+      buildTableOfContents(idl, config.multi),
+      hyperlinks
+    );
+    fs.writeFileSync(path.join(config.outputPath, "anchor", "_toc.md"), toc);
+    fs.writeFileSync(
+      path.join(config.outputPath, "anchor", "Errors.md"),
+      `---
+sidebar_position: 50
+---
+${errors}`
+    );
+    return;
+  }
+  fileString += buildTableOfContents(idl);
 
   fileString +=
     "\n## Accounts\n" +
@@ -41,7 +68,8 @@ export async function idl2markdown(
     "\n## Errors\n" +
     errors;
 
-  return insertHyperlinks(fileString, hyperlinks);
+  fs.writeFileSync(config.outputPath, insertHyperlinks(fileString, hyperlinks));
+  return;
 }
 
 function getNames(param?: { name: string }[]): Set<string> {
@@ -60,8 +88,55 @@ function printRecord(record: Record<string, string>): string {
   return outputString;
 }
 
-function buildTableOfContents(idl: anchor.Idl): string {
+function writeRecord(
+  record: Record<string, string>,
+  basePath: string,
+  folder: string,
+  hyperlinks: Record<string, string>,
+  sortOrder: number
+): void {
+  const filePath = path.join(basePath, folder.toLowerCase());
+  fs.mkdirSync(filePath, { recursive: true });
+  fs.writeFileSync(
+    path.join(filePath, `_category_.json`),
+    JSON.stringify({
+      label: folder,
+      position: sortOrder,
+    })
+  );
+  for (const k in record) {
+    const outputPath = path.join(filePath, `${k}.md`);
+    fs.writeFileSync(outputPath, insertHyperlinks(record[k], hyperlinks));
+  }
+}
+
+function buildTableOfContents(idl: anchor.Idl, multi = false): string {
   let outputString = "";
+  if (multi) {
+    outputString += `* [Accounts](/program/accounts)\n`;
+    const accountNames = getNames(idl.accounts);
+    for (const name of accountNames) {
+      outputString += `    * ${name}\n`;
+    }
+    outputString += `* [Instructions](/program/instructions)\n`;
+    const instructionNames = getNames(idl.instructions);
+    for (const name of instructionNames) {
+      outputString += `    * ${name}\n`;
+    }
+    outputString += `* [Events](/program/events)\n`;
+    const eventNames = getNames(idl.events);
+    for (const name of eventNames) {
+      outputString += `    * ${name}\n`;
+    }
+    outputString += `* [Types](/program/types)\n`;
+    const typeNames = getNames(idl.types);
+    for (const name of typeNames) {
+      outputString += `    * ${name}\n`;
+    }
+    outputString += `* [Errors](/program/errors)\n`;
+    return outputString;
+  }
+
   outputString += `## Table of Contents\n`;
   outputString += `* [Accounts](#accounts)\n`;
   const accountNames = getNames(idl.accounts);
@@ -89,6 +164,38 @@ function buildTableOfContents(idl: anchor.Idl): string {
 
 function getHyperlinks(idl: anchor.Idl, multi = false): Record<string, string> {
   const hyperlinks: Record<string, string> = {};
+
+  if (multi) {
+    const accounts = getNames(idl.accounts);
+    for (const name of accounts) {
+      hyperlinks[name] = `[${name}](/program/accounts/${name
+        .toLowerCase()
+        .replace(" ", "")})`;
+    }
+
+    const instructions = getNames(idl.instructions);
+    for (const name of instructions) {
+      hyperlinks[name] = `[${name}](/program/instructions/${name
+        .toLowerCase()
+        .replace(" ", "")})`;
+    }
+
+    const types = getNames(idl.types);
+    for (const name of types) {
+      hyperlinks[name] = `[${name}](/program/types/${name
+        .toLowerCase()
+        .replace(" ", "")})`;
+    }
+
+    const events = getNames(idl.events);
+    for (const name of events) {
+      hyperlinks[name] = `[${name}](/program/events${name
+        .toLowerCase()
+        .replace(" ", "")})`;
+    }
+
+    return hyperlinks;
+  }
 
   const accounts = getNames(idl.accounts);
   for (const name of accounts) {
