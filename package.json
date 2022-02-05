@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "cli to convert generated documentation to docusaurus format",
   "author": "gallynaut @gallynaut",
-  "private": true,
+  "private": false,
   "bin": {
     "rawrtools": "./bin/run"
   },
@@ -44,8 +44,8 @@
     "typescript": "^4.4.3"
   },
   "oclif": {
-    "bin": "anchor2markdown",
-    "dirname": "anchor2markdown",
+    "bin": "rawrtools",
+    "dirname": "rawrtools",
     "commands": "./dist/commands",
     "plugins": [
       "@oclif/plugin-help",
@@ -70,7 +70,7 @@
   "engines": {
     "node": ">=12.0.0"
   },
-  "bugs": "https://github.com/switchboard-xyz/anchor2markdown/issues",
+  "bugs": "https://github.com/switchboard-xyz/rawrtools/issues",
   "keywords": [
     "oclif"
   ],

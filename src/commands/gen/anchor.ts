@@ -10,7 +10,7 @@ export default class GenAnchor extends Command {
   static description = "Convert an anchor IDL to a markdown page";
 
   static examples = [
-    `$ anchor2markdown run SW1TCH7qEPTdLsDHRgPuMQjbQxKdH2aBStViMFnt64f --mdx
+    `$ rawrtools gen:anchor SW1TCH7qEPTdLsDHRgPuMQjbQxKdH2aBStViMFnt64f -o docs/program
 `,
   ];
 
