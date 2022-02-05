@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { AnchorItem, AnchorItemCollection } from "./types";
+import { AnchorItem, AnchorItemCollection } from "../types";
 
 export function insertHyperlinks(
   fileString: string,
@@ -94,7 +94,7 @@ export function writeAccount(
   outputPath: string,
   hyperlinks: Record<string, string>
 ) {
-  let outputString = `${item.description ?? ""}\n`;
+  let outputString = `${item.description ?? ""}\n\n`;
   if (item.type === "enum") {
     outputString += `| Name | Value | Description |\n|--|--|--|\n`;
     item.children?.forEach((value, index) => {
@@ -122,7 +122,7 @@ export function writeInstruction(
   outputPath: string,
   hyperlinks: Record<string, string>
 ) {
-  let outputString = `${item.description ?? ""}\n`;
+  let outputString = `${item.description ?? ""}\n\n`;
   const accounts = item.children?.filter(
     (children) => children.type === "account"
   );
@@ -155,7 +155,7 @@ export function writeEvent(
   outputPath: string,
   hyperlinks: Record<string, string>
 ) {
-  let outputString = `${item.description ?? ""}\n`;
+  let outputString = `${item.description ?? ""}\n\n`;
   outputString += `| Name | Type | Description |\n|--|--|--|\n`;
   item.children?.forEach((value) => {
     outputString += `| ${value.name} | ${value.other?.type ?? "N/A"} | ${
@@ -181,7 +181,7 @@ export function writeType(
       } |\n`;
     });
   } else if (item.type === "account") {
-    outputString += `| Field | Type | Description |\n|--|--|--|\n`;
+    outputString += `\n| Field | Type | Description |\n|--|--|--|\n`;
     item.children?.forEach((value, index) => {
       outputString += `| ${value.name} |  ${value?.other?.type ?? "N/A"} | ${
         value.description ?? ""

@@ -1,13 +1,12 @@
 import * as anchor from "@project-serum/anchor";
 import * as idl from "@project-serum/anchor/dist/cjs/idl";
 import path from "path";
-import fs from "fs";
 import {
   AnchorItemCollection,
   AnchorItem,
   DescriptionItemCollection,
   DescriptionItem,
-} from "./types";
+} from "../types";
 
 function getDescription(
   name: string,
@@ -383,18 +382,16 @@ export function parsed2Descriptions(
     "children",
     "description",
   ];
-  function isNumeric(val) {
+  function isNumeric(val: string) {
     return /^-?\d+$/.test(val);
   }
   const descriptionsString = JSON.stringify(
     parsedIdl,
     (key, value) => {
       if (key && !isNumeric(key) && !allowedKeys.includes(key.toLowerCase())) {
-        console.log(`${key} not found`);
         return undefined;
       }
 
-      console.log(`${key} found`);
       return value;
     },
     2

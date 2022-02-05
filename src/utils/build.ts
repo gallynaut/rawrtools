@@ -1,14 +1,14 @@
 import * as anchor from "@project-serum/anchor";
-import { parseIdl } from "./parse";
 import path from "path";
 import fs from "fs";
 import {
   AnchorItemCollection,
   AnchorItem,
   DescriptionItemCollection,
-} from "./types";
-import { propertiesToArray } from "./utils/walkStruct";
+} from "../types";
 import {
+  propertiesToArray,
+  parseIdl,
   writeAccount,
   writeErrors,
   writeEvent,
@@ -17,7 +17,7 @@ import {
   writeOverview,
   writeShortToc,
   writeType,
-} from "./write";
+} from "./";
 
 // only handles top level links, not anchor links
 export function buildHyperlinks(
@@ -52,20 +52,19 @@ export function buildHyperlinks(
   return hyperlinks;
 }
 
-export async function buildIdl(
+export async function writeMarkdown(
   idl: anchor.Idl,
-  basePath = "/program",
-  descriptions?: DescriptionItemCollection,
-  config?: { multi: boolean }
+  basePath: string,
+  fsPath: string,
+  descriptions?: DescriptionItemCollection
 ): Promise<void> {
-  const defaultPath = path.join(process.cwd(), "anchor");
   const parsedIdl = parseIdl(idl, basePath, descriptions);
   const hyperlinks = buildHyperlinks(parsedIdl);
 
-  writeShortToc(defaultPath);
-  writeLongToc(parsedIdl, defaultPath, hyperlinks);
+  writeShortToc(fsPath);
+  writeLongToc(parsedIdl, fsPath, hyperlinks);
 
-  const accountPath = path.join(defaultPath, "accounts");
+  const accountPath = path.join(fsPath, "accounts");
   fs.mkdirSync(accountPath, { recursive: true });
   writeOverview(
     parsedIdl.accounts,
@@ -80,7 +79,7 @@ export async function buildIdl(
     writeAccount(item, accountPath, hyperlinks);
   }
 
-  const instructionPath = path.join(defaultPath, "instructions");
+  const instructionPath = path.join(fsPath, "instructions");
   fs.mkdirSync(instructionPath, { recursive: true });
   writeOverview(
     parsedIdl.instructions,
@@ -94,7 +93,7 @@ export async function buildIdl(
     writeInstruction(item, instructionPath, hyperlinks);
   }
 
-  const eventPath = path.join(defaultPath, "events");
+  const eventPath = path.join(fsPath, "events");
   fs.mkdirSync(eventPath, { recursive: true });
   writeOverview(
     parsedIdl.events,
@@ -108,7 +107,7 @@ export async function buildIdl(
     writeEvent(item, eventPath, hyperlinks);
   }
 
-  const typePath = path.join(defaultPath, "types");
+  const typePath = path.join(fsPath, "types");
   fs.mkdirSync(typePath, { recursive: true });
   writeOverview(
     parsedIdl.types,
@@ -122,5 +121,5 @@ export async function buildIdl(
     writeType(item, typePath, hyperlinks);
   }
 
-  writeErrors(parsedIdl.errors, defaultPath, 50);
+  writeErrors(parsedIdl.errors, fsPath, 50);
 }
