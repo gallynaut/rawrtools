@@ -2,7 +2,11 @@ import * as anchor from "@project-serum/anchor";
 import { parseIdl } from "./parse";
 import path from "path";
 import fs from "fs";
-import { AnchorItemCollection, AnchorItem } from "./types";
+import {
+  AnchorItemCollection,
+  AnchorItem,
+  DescriptionItemCollection,
+} from "./types";
 import { propertiesToArray } from "./utils/walkStruct";
 import {
   writeAccount,
@@ -51,10 +55,11 @@ export function buildHyperlinks(
 export async function buildIdl(
   idl: anchor.Idl,
   basePath = "/program",
+  descriptions?: DescriptionItemCollection,
   config?: { multi: boolean }
 ): Promise<void> {
   const defaultPath = path.join(process.cwd(), "anchor");
-  const parsedIdl = parseIdl(idl, basePath);
+  const parsedIdl = parseIdl(idl, basePath, descriptions);
   const hyperlinks = buildHyperlinks(parsedIdl);
 
   writeShortToc(defaultPath);

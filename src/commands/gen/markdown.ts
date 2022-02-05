@@ -1,12 +1,13 @@
 import { Command, Flags } from "@oclif/core";
 import * as anchor from "@project-serum/anchor";
 import { clusterApiUrl, Connection, Keypair, PublicKey } from "@solana/web3.js";
-import { idl2markdown } from "../utils/convert";
+import { idl2markdown } from "../../utils/convert";
 import path from "path";
 import fs from "fs";
-import { buildIdl } from "../build";
+import { buildIdl } from "../../build";
+import { DescriptionItemCollection } from "../../types";
 
-export default class RunCommand extends Command {
+export default class GenMarkdown extends Command {
   static description = "Convert an anchor IDL to a markdown page";
 
   static examples = [
@@ -30,8 +31,14 @@ export default class RunCommand extends Command {
     output: Flags.string({
       description: "where to output the file to",
       required: false,
-      default: "anchor.md",
+      default: "./anchor",
       char: "o",
+    }),
+    descriptions: Flags.string({
+      description: "description file to persist changes",
+      required: false,
+      default: "descriptions.json",
+      char: "d",
     }),
   };
 
@@ -44,7 +51,7 @@ export default class RunCommand extends Command {
   ];
 
   async run(): Promise<void> {
-    const { args, flags } = await this.parse(RunCommand);
+    const { args, flags } = await this.parse(GenMarkdown);
 
     const programId = new PublicKey(args.programId);
 
@@ -64,22 +71,42 @@ export default class RunCommand extends Command {
       "switchboardv2_idl.json",
       JSON.stringify(idl, undefined, 2)
     );
-
-    const outputPath = getOutputPath(flags.output, flags.mdx);
-    flags.multi
-      ? console.log(`outputPath: ${path.dirname(outputPath)}`)
-      : console.log(`outputFile: ${path.parse(outputPath).base}`);
-    // await idl2markdown(idl, {
-    //   mdx: flags.mdx,
-    //   multi: flags.multi,
-    //   outputPath: path.dirname(outputPath),
-    //   outputFile: path.parse(outputPath).base,
-    // });
-    await buildIdl(idl);
+    const descriptionsPath = path.join(process.cwd(), flags.descriptions);
+    const descriptions: DescriptionItemCollection =
+      readDescriptions(descriptionsPath);
+    // const descriptions: DescriptionItemCollection = fs.existsSync(
+    //   descriptionsPath
+    // )
+    //   ? JSON.parse(fs.readFileSync(descriptionsPath, "utf8"))
+    //   : undefined;
+    // const outputPath = getOutputPath(flags.output, flags.mdx);
+    const outputPath = path.join(process.cwd(), "anchor");
+    fs.mkdirSync(outputPath, { recursive: true });
+    // flags.multi
+    //   ? console.log(`outputPath: ${path.dirname(outputPath)}`)
+    //   : console.log(`outputFile: ${path.parse(outputPath).base}`);
+    await buildIdl(idl, "/program", descriptions);
   }
 
   async catch(error: any) {
     console.error(error);
+  }
+}
+
+function readDescriptions(
+  descriptionsPath: string
+): DescriptionItemCollection | undefined {
+  if (fs.existsSync(descriptionsPath)) {
+    console.log("reading descriptions");
+    const descriptions = JSON.parse(fs.readFileSync(descriptionsPath, "utf8"));
+    // console.log(
+    //   `AggData = ${
+    //     descriptions?.accounts?.[0]
+    //       ? JSON.stringify(descriptions?.accounts?.[0], undefined, 2)
+    //       : ""
+    //   }`
+    // );
+    return descriptions;
   }
 }
 

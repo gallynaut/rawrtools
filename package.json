@@ -1,16 +1,16 @@
 {
-  "name": "anchor2markdown",
+  "name": "@gallynaut/rawrtools",
   "version": "0.0.0",
-  "description": "cli to convert an anchor idl to an mdx style markdown page",
+  "description": "cli to convert generated documentation to docusaurus format",
   "author": "gallynaut @gallynaut",
   "private": true,
   "bin": {
-    "anchor2markdown": "./bin/run"
+    "rawrtools": "./bin/run"
   },
-  "homepage": "https://github.com/switchboard-xyz/anchor2markdown",
+  "homepage": "https://github.com/gallynaut/rawrtools",
   "license": "MIT",
   "main": "dist/index.js",
-  "repository": "switchboard-xyz/anchor2markdown",
+  "repository": "gallynaut/rawrtools",
   "files": [
     "/bin",
     "/dist",

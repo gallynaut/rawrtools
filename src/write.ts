@@ -94,16 +94,20 @@ export function writeAccount(
   outputPath: string,
   hyperlinks: Record<string, string>
 ) {
-  let outputString = "";
+  let outputString = `${item.description ?? ""}\n`;
   if (item.type === "enum") {
     outputString += `| Name | Value | Description |\n|--|--|--|\n`;
     item.children?.forEach((value, index) => {
-      outputString += `| ${value.name} | ${value?.other?.value ?? "N/A"} | |\n`;
+      outputString += `| ${value.name} | ${value?.other?.value ?? "N/A"} | ${
+        value.description ?? ""
+      } |\n`;
     });
   } else if (item.type === "account") {
     outputString += `| Field | Type | Description |\n|--|--|--|\n`;
     item.children?.forEach((value, index) => {
-      outputString += `| ${value.name} |  ${value?.other?.type ?? "N/A"} | |\n`;
+      outputString += `| ${value.name} |  ${value?.other?.type ?? "N/A"} | ${
+        value.description ?? ""
+      } |\n`;
     });
   }
 
@@ -118,7 +122,7 @@ export function writeInstruction(
   outputPath: string,
   hyperlinks: Record<string, string>
 ) {
-  let outputString = "";
+  let outputString = `${item.description ?? ""}\n`;
   const accounts = item.children?.filter(
     (children) => children.type === "account"
   );
@@ -128,13 +132,15 @@ export function writeInstruction(
     accounts.forEach((value) => {
       outputString += `| ${value.name} | ${value.other?.isMut ?? "N/A"} | ${
         value.other?.isSigner ?? "N/A"
-      } |  |\n`;
+      } | ${value.description ?? ""} |\n`;
     });
   }
   if (args && args.length > 0) {
     outputString += `## Args\n|Name|Type|Description|\n|--|--|--|\n`;
     args.forEach((value) => {
-      outputString += `| ${value.name} | ${value.other?.type ?? "N/A"} |  |\n`;
+      outputString += `| ${value.name} | ${value.other?.type ?? "N/A"} | ${
+        value.description ?? ""
+      }  |\n`;
     });
   }
 
@@ -149,10 +155,12 @@ export function writeEvent(
   outputPath: string,
   hyperlinks: Record<string, string>
 ) {
-  let outputString = "";
+  let outputString = `${item.description ?? ""}\n`;
   outputString += `| Name | Type | Description |\n|--|--|--|\n`;
   item.children?.forEach((value) => {
-    outputString += `| ${value.name} | ${value.other?.type ?? "N/A"} | |\n`;
+    outputString += `| ${value.name} | ${value.other?.type ?? "N/A"} | ${
+      value.description ?? ""
+    } |\n`;
   });
 
   const fileString = insertHyperlinks(outputString, hyperlinks);
@@ -164,16 +172,20 @@ export function writeType(
   outputPath: string,
   hyperlinks: Record<string, string>
 ) {
-  let outputString = "";
+  let outputString = `${item.description ?? ""}\n`;
   if (item.type === "enum") {
     outputString += `| Name | Value | Description |\n|--|--|--|\n`;
     item.children?.forEach((value, index) => {
-      outputString += `| ${value.name} | ${value?.other?.value ?? "N/A"} | |\n`;
+      outputString += `| ${value.name} | ${value?.other?.value ?? "N/A"} | ${
+        value.description ?? ""
+      } |\n`;
     });
   } else if (item.type === "account") {
     outputString += `| Field | Type | Description |\n|--|--|--|\n`;
     item.children?.forEach((value, index) => {
-      outputString += `| ${value.name} |  ${value?.other?.type ?? "N/A"} | |\n`;
+      outputString += `| ${value.name} |  ${value?.other?.type ?? "N/A"} | ${
+        value.description ?? ""
+      } |\n`;
     });
   }
 

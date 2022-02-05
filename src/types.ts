@@ -10,8 +10,9 @@ export interface DescriptionItemCollection {
 }
 
 export type IDescription = {
+  name: string;
   description: string;
-  fields?: string;
+  children?: DescriptionItem[];
 };
 
 export type DescriptionItem = IDescription;
