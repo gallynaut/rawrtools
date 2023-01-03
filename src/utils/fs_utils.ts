@@ -1,21 +1,19 @@
-import path from "path";
-import fs from "fs";
+import path from "node:path";
+import fs from "node:fs";
 
 export function getOutputPath(output: string, mdx = false): string {
-  const ext = mdx ? "mdx" : "md";
+  const extension = mdx ? "mdx" : "md";
   let filePath = "";
-  if (output.startsWith("/")) {
-    filePath = output;
-  } else {
-    filePath = path.join(process.cwd(), output);
+  filePath = output.startsWith("/") ? output : path.join(process.cwd(), output);
+
+  const fileExtension = filePath.split(".").pop();
+  if (!fileExtension || fileExtension === filePath) {
+    return path.join(filePath, `anchor.${extension}`);
   }
 
-  const fileExt = filePath.split(".").pop();
-  if (!fileExt || fileExt === filePath) {
-    return path.join(filePath, `anchor.${ext}`);
+  if (fileExtension !== extension) {
+    return `${filePath.slice(0, -1 * fileExtension.length)}${extension}`;
   }
-  if (fileExt !== ext) {
-    return `${filePath.slice(0, -1 * fileExt.length)}${ext}`;
-  }
+
   return filePath;
 }

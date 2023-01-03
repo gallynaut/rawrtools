@@ -1,6 +1,14 @@
 import { PublicKey } from "@solana/web3.js";
 import * as anchor from "@project-serum/anchor";
 
+export type IDescription = {
+  name: string;
+  description: string;
+  children?: IDescription[];
+};
+
+export type DescriptionItem = IDescription;
+
 export interface DescriptionItemCollection {
   accounts?: DescriptionItem[];
   errors?: DescriptionItem[];
@@ -8,14 +16,6 @@ export interface DescriptionItemCollection {
   types?: DescriptionItem[];
   events?: DescriptionItem[];
 }
-
-export type IDescription = {
-  name: string;
-  description: string;
-  children?: DescriptionItem[];
-};
-
-export type DescriptionItem = IDescription;
 
 export type AnchorType =
   | "account"
@@ -30,7 +30,7 @@ export type AnchorType =
 export type AnchorItem = {
   name: string;
   type: AnchorType;
-  description?: string;
+  description: string;
   item?: string;
   permalink?: string;
   children?: AnchorItem[];

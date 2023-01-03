@@ -1,5 +1,5 @@
 import * as anchor from "@project-serum/anchor";
-import * as idl from "@project-serum/anchor/dist/cjs/idl";
+import { IdlAccountItem, IdlType } from "@project-serum/anchor/dist/cjs/idl";
 import path from "path";
 import {
   AnchorItemCollection,
@@ -10,24 +10,39 @@ import {
 
 function getDescription(
   name: string,
-  descriptions: DescriptionItem[] = []
+  descriptions: DescriptionItem[] = [],
+  anchorComments?: Array<string>
 ): string {
-  if (descriptions.length === 0) {
-    return "";
+  let descriptionString = "";
+  if (anchorComments && anchorComments.length > 0) {
+    for (const comment of anchorComments) {
+      descriptionString += comment.endsWith(".")
+        ? comment + " "
+        : comment + ". ";
+    }
   }
+
+  if (descriptions.length === 0) {
+    return descriptionString;
+  }
+
   const index = descriptions.findIndex(
     (item) =>
-      item.name.toLowerCase() === name.toLowerCase() &&
-      item.hasOwnProperty("description")
+      item.name.toLowerCase() === name.toLowerCase() && "description" in item
   );
   if (index === -1) {
-    // console.log(`no description for ${name}`);
-    return "";
+    return descriptionString;
   }
 
-  // console.log(`found description for ${name}`);
+  const description = descriptions[index].description;
+  // dont add if the same comment already exists
+  if (!descriptionString.includes(description)) {
+    descriptionString += description.endsWith(".")
+      ? description + " "
+      : description + ". ";
+  }
 
-  return descriptions[index].description;
+  return descriptionString;
 }
 
 function getDescriptionList(
@@ -37,10 +52,10 @@ function getDescriptionList(
   if (descriptions.length === 0) {
     return [];
   }
+
   const index = descriptions.findIndex(
     (item) =>
-      item.name.toLowerCase() === name.toLowerCase() &&
-      item.hasOwnProperty("children")
+      item.name.toLowerCase() === name.toLowerCase() && "children" in item
   );
   if (index === -1) {
     return [];
@@ -49,7 +64,7 @@ function getDescriptionList(
   return descriptions[index].children ?? [];
 }
 
-export function getIdlTypeString(type: idl.IdlType): string {
+export function getIdlTypeString(type: IdlType): string {
   let typeString = "";
   if (typeof type === "string") {
     typeString = type;
@@ -62,6 +77,7 @@ export function getIdlTypeString(type: idl.IdlType): string {
   } else if ("array" in type) {
     typeString = `${getIdlTypeString(type.array[0])}[${type.array[1]}]`;
   }
+
   return typeString;
 }
 
@@ -74,45 +90,26 @@ export function buildAccountCollection(
   const accountPath = path.join(basePath, "accounts");
   const accounts: AnchorItem[] | undefined = idl.accounts?.map(
     (account): AnchorItem => {
-      if (account.type.kind === "enum") {
-        return {
-          name: account.name,
-          type: "enum",
-          permalink: path.join(
-            accountPath,
-            account.name.toLowerCase().replace(/[^a-zA-Z0-9/]/g, "")
-          ),
-          description: getDescription(account.name, descriptions),
-          children: account.type.variants.map((field, index) => {
-            return {
-              name: field.name,
-              type: "field",
-              description: getDescription(
-                field.name,
-                getDescriptionList(account.name, descriptions)
-              ),
-              other: {
-                value: `${index + 1}`,
-              },
-            };
-          }),
-        };
-      }
       return {
         name: account.name,
         type: "account",
         permalink: path.join(
           accountPath,
-          account.name.toLowerCase().replace(/[^a-zA-Z0-9/]/g, "")
+          account.name.toLowerCase().replace(/[^\d/A-Za-z]/g, "")
         ),
-        description: getDescription(account.name, descriptions),
+        description: getDescription(
+          account.name,
+          descriptions,
+          "docs" in account ? account.docs : undefined
+        ),
         children: account.type.fields.map((field) => {
           return {
             name: field.name,
             type: "field",
             description: getDescription(
               field.name,
-              getDescriptionList(account.name, descriptions)
+              getDescriptionList(account.name, descriptions),
+              "docs" in field ? field.docs : undefined
             ),
             other: {
               type: getIdlTypeString(field.type),
@@ -125,6 +122,7 @@ export function buildAccountCollection(
   if (!accounts) {
     return [];
   }
+
   return accounts;
 }
 
@@ -141,9 +139,13 @@ export function buildTypeCollecton(
         type: "enum",
         permalink: path.join(
           typesPath,
-          type.name.toLowerCase().replace(/[^a-zA-Z0-9/]/g, "")
+          type.name.toLowerCase().replace(/[^\d/A-Za-z]/g, "")
         ),
-        description: getDescription(type.name, descriptions),
+        description: getDescription(
+          type.name,
+          descriptions,
+          "docs" in type ? type.docs : undefined
+        ),
         children: type.type.variants.map((field, index) => {
           return {
             name: field.name,
@@ -159,21 +161,27 @@ export function buildTypeCollecton(
         }),
       };
     }
+
     return {
       name: type.name,
       type: "account",
       permalink: path.join(
         typesPath,
-        type.name.toLowerCase().replace(/[^a-zA-Z0-9/]/g, "")
+        type.name.toLowerCase().replace(/[^\d/A-Za-z]/g, "")
       ),
-      description: getDescription(type.name, descriptions),
+      description: getDescription(
+        type.name,
+        descriptions,
+        "docs" in type ? type.docs : undefined
+      ),
       children: type.type.fields.map((field, index) => {
         return {
           name: field.name,
           type: "field",
           description: getDescription(
             field.name,
-            getDescriptionList(type.name, descriptions)
+            getDescriptionList(type.name, descriptions),
+            "docs" in field ? field.docs : undefined
           ),
           other: {
             type: getIdlTypeString(field.type),
@@ -185,10 +193,11 @@ export function buildTypeCollecton(
   if (!types) {
     return [];
   }
+
   return types;
 }
 
-const getIsMut = (account: idl.IdlAccountItem): string => {
+const getIsMut = (account: IdlAccountItem): string => {
   const isMut =
     "isMut" in account
       ? `${account.isMut}`
@@ -201,18 +210,16 @@ const getIsMut = (account: idl.IdlAccountItem): string => {
 };
 
 const getMetadataField = (
-  account: idl.IdlAccountItem,
+  account: IdlAccountItem,
   field: "isMut" | "isSigner"
 ): string => {
   const isMut =
     field in account
-      ? // @ts-ignore
-        `${account[field]}`
+      ? `${account[field]}`
       : "accounts" in account &&
         account.accounts.length > 0 &&
         field in account.accounts[0]
-      ? // @ts-ignore
-        `${account.accounts[0][field]}`
+      ? `${account.accounts[0][field]}`
       : "UNK";
   return isMut;
 };
@@ -229,38 +236,51 @@ export function buildInstructionCollection(
         return {
           name: account.name,
           type: "account",
-          description: getDescription(account.name, descriptions),
+          description: getDescription(
+            account.name,
+            descriptions,
+            "docs" in account ? account.docs : undefined
+          ),
           other: {
             isMut: getMetadataField(account, "isMut"),
             isSigner: getMetadataField(account, "isSigner"),
           },
         };
       });
-      const args = instruction.args.map((arg): AnchorItem => {
+      const arguments_ = instruction.args.map((argument): AnchorItem => {
         return {
-          name: arg.name,
+          name: argument.name,
           type: "arg",
-          description: getDescription(arg.name, descriptions),
+          description: getDescription(
+            argument.name,
+            descriptions,
+            "docs" in argument ? argument.docs : undefined
+          ),
           other: {
-            type: getIdlTypeString(arg.type),
+            type: getIdlTypeString(argument.type),
           },
         };
       });
       return {
         name: instruction.name,
         type: "instruction",
-        description: getDescription(instruction.name, descriptions),
+        description: getDescription(
+          instruction.name,
+          descriptions,
+          "docs" in instruction ? instruction.docs : undefined
+        ),
         permalink: path.join(
           instructionPath,
-          instruction.name.toLowerCase().replace(/[^a-zA-Z0-9/]/g, "")
+          instruction.name.toLowerCase().replace(/[^\d/A-Za-z]/g, "")
         ),
-        children: accounts.concat(args),
+        children: [...accounts, ...arguments_],
       };
     }
   );
   if (!instructions) {
     return [];
   }
+
   return instructions;
 }
 
@@ -278,7 +298,7 @@ export function buildEventCollection(
         description: getDescription(event.name, descriptions),
         permalink: path.join(
           eventPath,
-          event.name.toLowerCase().replace(/[^a-zA-Z0-9/]/g, "")
+          event.name.toLowerCase().replace(/[^\d/A-Za-z]/g, "")
         ),
         children: event.fields.map((field, index) => {
           return {
@@ -299,6 +319,7 @@ export function buildEventCollection(
   if (!events) {
     return [];
   }
+
   return events;
 }
 
@@ -316,7 +337,7 @@ export function buildErrorCollection(
         description: getDescription(error.name, descriptions),
         permalink: path.join(
           errorPath,
-          error.name.toLowerCase().replace(/[^a-zA-Z0-9/]/g, "")
+          error.name.toLowerCase().replace(/[^\d/A-Za-z]/g, "")
         ),
         other: {
           code: error.code.toString(10),
@@ -329,6 +350,7 @@ export function buildErrorCollection(
   if (!errors) {
     return [];
   }
+
   return errors;
 }
 
@@ -369,10 +391,14 @@ export function parseIdl(
   };
 }
 
+function isNumeric(value: string) {
+  return /^-?\d+$/.test(value);
+}
+
 export function parsed2Descriptions(
   parsedIdl: AnchorItemCollection
 ): DescriptionItemCollection {
-  const allowedKeys = [
+  const allowedKeys = new Set([
     "accounts",
     "instructions",
     "events",
@@ -381,15 +407,13 @@ export function parsed2Descriptions(
     "name",
     "children",
     "description",
-  ];
-  function isNumeric(val: string) {
-    return /^-?\d+$/.test(val);
-  }
+  ]);
+
   const descriptionsString = JSON.stringify(
     parsedIdl,
     (key, value) => {
-      if (key && !isNumeric(key) && !allowedKeys.includes(key.toLowerCase())) {
-        return undefined;
+      if (key && !isNumeric(key) && !allowedKeys.has(key.toLowerCase())) {
+        return;
       }
 
       return value;

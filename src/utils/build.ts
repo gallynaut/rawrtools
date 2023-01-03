@@ -7,8 +7,8 @@ import {
   DescriptionItemCollection,
 } from "../types";
 import {
-  propertiesToArray,
   parseIdl,
+  propertiesToArray,
   writeAccount,
   writeErrors,
   writeEvent,
@@ -19,36 +19,26 @@ import {
   writeType,
 } from "./";
 
+const buildHyperlink = (name: string, permalink: string): string => {
+  return `[${name}](${permalink})`;
+};
+
 // only handles top level links, not anchor links
 export function buildHyperlinks(
   idl: AnchorItemCollection
 ): Record<string, string> {
-  const buildHyperlink = (name: string, permalink: string): string => {
-    return `[${name}](${permalink})`;
-  };
-
   const allProperties = propertiesToArray(idl);
   const hyperlinks: Record<string, string> = {};
-  allProperties.accounts.forEach((item: AnchorItem) => {
-    if (item.hasOwnProperty("permalink") && item.permalink) {
+  for (const item of [
+    ...allProperties.accounts,
+    ...allProperties.instructions,
+    ...allProperties.events,
+    ...allProperties.types,
+  ]) {
+    if ("permalink" in item && item.permalink) {
       hyperlinks[item.name] = buildHyperlink(item.name, item.permalink);
     }
-  });
-  allProperties.instructions.forEach((item: AnchorItem) => {
-    if (item.hasOwnProperty("permalink") && item.permalink) {
-      hyperlinks[item.name] = buildHyperlink(item.name, item.permalink);
-    }
-  });
-  allProperties.events.forEach((item: AnchorItem) => {
-    if (item.hasOwnProperty("permalink") && item.permalink) {
-      hyperlinks[item.name] = buildHyperlink(item.name, item.permalink);
-    }
-  });
-  allProperties.types.forEach((item: AnchorItem) => {
-    if (item.hasOwnProperty("permalink") && item.permalink) {
-      hyperlinks[item.name] = buildHyperlink(item.name, item.permalink);
-    }
-  });
+  }
   return hyperlinks;
 }
 
@@ -61,8 +51,8 @@ export async function writeMarkdown(
   const parsedIdl = parseIdl(idl, basePath, descriptions);
   const hyperlinks = buildHyperlinks(parsedIdl);
 
-  writeShortToc(fsPath);
-  writeLongToc(parsedIdl, fsPath, hyperlinks);
+  writeShortToc(fsPath, basePath);
+  writeLongToc(parsedIdl, fsPath, basePath, hyperlinks);
 
   const accountPath = path.join(fsPath, "accounts");
   fs.mkdirSync(accountPath, { recursive: true });
@@ -70,7 +60,7 @@ export async function writeMarkdown(
     parsedIdl.accounts,
     accountPath,
     hyperlinks,
-    "/program/accounts",
+    `${basePath}/accounts`,
     "Accounts",
     10
   );
@@ -85,7 +75,7 @@ export async function writeMarkdown(
     parsedIdl.instructions,
     instructionPath,
     hyperlinks,
-    "/program/instructions",
+    `${basePath}/instructions`,
     "Instructions",
     20
   );
@@ -99,7 +89,7 @@ export async function writeMarkdown(
     parsedIdl.events,
     eventPath,
     hyperlinks,
-    "/program/events",
+    `${basePath}/events`,
     "Events",
     30
   );
@@ -113,7 +103,7 @@ export async function writeMarkdown(
     parsedIdl.types,
     typePath,
     hyperlinks,
-    "/program/types",
+    `${basePath}/types`,
     "Types",
     40
   );
